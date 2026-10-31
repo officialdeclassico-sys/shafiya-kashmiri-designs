@@ -1,36 +1,44 @@
 /**
- * Utility to resolve asset URLs with Vite's configured base path (e.g. for GitHub Pages).
+ * Robust utility to resolve asset URLs with Vite's configured base path (e.g. for GitHub Pages).
  *
- * Examples:
- * - On GitHub Pages: import.meta.env.BASE_URL === '/shafiya-kashmiri-designs/'
- *   getAssetUrl('/assets/aistudio/hero_clean_canvas.png') -> '/shafiya-kashmiri-designs/assets/aistudio/hero_clean_canvas.png'
- * - In local dev with base '/':
- *   getAssetUrl('/assets/aistudio/hero_clean_canvas.png') -> '/assets/aistudio/hero_clean_canvas.png'
- * - Idempotent:
- *   getAssetUrl('/shafiya-kashmiri-designs/assets/...') -> does not duplicate base prefix
- * - External / Data URLs:
- *   getAssetUrl('https://...') -> returns unchanged
+ * Guarantees:
+ * - External, data, and blob URLs remain intact.
+ * - Any leading duplicate repository base prefixes (e.g. "shafiya-kashmiri-designs/") are cleanly stripped.
+ * - Produces consistent, idempotent URLs:
+ *     getAssetUrl('assets/aistudio/plp_prod_1.png') -> '/shafiya-kashmiri-designs/assets/aistudio/plp_prod_1.png'
+ *     getAssetUrl('/shafiya-kashmiri-designs/assets/aistudio/plp_prod_1.png') -> '/shafiya-kashmiri-designs/assets/aistudio/plp_prod_1.png'
+ * - Provides a safe original product fallback if given null/undefined/empty string, preventing broken boxes.
  */
-export function getAssetUrl(path: string | undefined | null): string {
-  if (!path) return '';
+export const DEFAULT_FALLBACK_IMAGE = 'assets/aistudio/plp_prod_1.png';
+
+export function getAssetUrl(
+  path: string | undefined | null,
+  fallback = DEFAULT_FALLBACK_IMAGE
+): string {
+  let target = path && path.trim().length > 0 ? path.trim() : fallback;
 
   // Preserve external URLs, data URLs, and blob URLs
-  if (/^(https?:|\/\/|data:|blob:)/i.test(path)) {
-    return path;
+  if (/^(https?:|\/\/|data:|blob:)/i.test(target)) {
+    return target;
   }
 
   // Get base URL configured in Vite (e.g. '/shafiya-kashmiri-designs/' or '/')
   const base = import.meta.env.BASE_URL || '/';
   const normalizedBase = base.endsWith('/') ? base : `${base}/`;
-  const basePrefix = normalizedBase.replace(/^\/+/, ''); // e.g. "shafiya-kashmiri-designs/"
+  const repoName = 'shafiya-kashmiri-designs';
 
-  // Remove leading slashes from path to normalize
-  const cleanPath = path.replace(/^\/+/, '');
+  // Strip leading slashes
+  let clean = target.replace(/^\/+/, '');
 
-  // Avoid double-prepending if the path already starts with the base path
-  if (basePrefix && cleanPath.startsWith(basePrefix)) {
-    return `/${cleanPath}`;
+  // Strip any duplicate or repeated repo name prefixes
+  while (clean.toLowerCase().startsWith(`${repoName}/`)) {
+    clean = clean.slice(repoName.length + 1).replace(/^\/+/, '');
   }
 
-  return `${normalizedBase}${cleanPath}`;
+  // If clean became empty, use fallback
+  if (!clean) {
+    clean = fallback.replace(/^\/+/, '');
+  }
+
+  return `${normalizedBase}${clean}`;
 }

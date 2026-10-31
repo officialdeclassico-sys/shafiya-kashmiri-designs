@@ -43,9 +43,9 @@ export type NavItemKey =
   | 'Our Story'
   | 'Contact';
 
-const NAV_ITEMS: { label: NavItemKey; hasDropdown?: boolean; targetId: string }[] = [
+const NAV_ITEMS: { label: NavItemKey; targetId: string }[] = [
   { label: 'Home', targetId: 'home' },
-  { label: 'Collections', hasDropdown: true, targetId: 'collections' },
+  { label: 'Collections', targetId: 'collections' },
   { label: 'Custom Designs', targetId: 'custom-designs' },
   { label: 'Our Story', targetId: 'our-story' },
   { label: 'Contact', targetId: 'contact' },
@@ -181,29 +181,12 @@ export const Header: React.FC<HeaderProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const scrollToSection = (targetId: string) => {
-    if (targetId === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const el = document.getElementById(targetId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handleNavClick = (label: NavItemKey, targetId: string) => {
+  const handleNavClick = (label: NavItemKey = 'Home') => {
     setActiveNav(label);
     if (onNavigate) {
       onNavigate(label);
-      window.setTimeout(() => {
-        scrollToSection(targetId);
-      }, 40);
-    } else {
-      scrollToSection(targetId);
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -327,7 +310,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => {
               setCollectionsOpen(false);
               onSelectCollectionSlide?.(0);
-              handleNavClick('Home', 'home');
+              handleNavClick();
             }}
           />
         </div>
@@ -339,95 +322,13 @@ export const Header: React.FC<HeaderProps> = ({
         >
           {NAV_ITEMS.map((item) => {
             const isActive = currentActiveNav === item.label;
-            if (item.hasDropdown) {
-              return (
-                <div
-                  key={item.label}
-                  ref={collectionsRef}
-                  className="relative"
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveNav(item.label);
-                      onNavigate?.('Collections');
-                      setCollectionsOpen((prev) => !prev);
-                    }}
-                    aria-expanded={collectionsOpen}
-                    aria-haspopup="true"
-                    className={`group relative py-2 inline-flex items-center text-[14px] xl:text-[15px] font-medium tracking-[-0.01em] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                      isActive
-                        ? 'text-[#141416] font-semibold'
-                        : 'text-[#262528] hover:text-[#f83a6b]'
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                    {isActive && (
-                      <span className="absolute left-0 right-0 -bottom-0.5 h-[2px] bg-[#f83a6b] rounded-full" />
-                    )}
-                  </button>
-
-                  {/* Collections Dropdown Menu */}
-                  {collectionsOpen && (
-                    <div
-                      role="menu"
-                      className="absolute left-0 mt-2.5 w-72 max-h-[75vh] overflow-y-auto rounded-2xl bg-[#fcf8f3] border border-[#ede2d8] shadow-xl p-2 z-40"
-                    >
-                      <button
-                        type="button"
-                        role="menuitem"
-                        onClick={() => {
-                          setCollectionsOpen(false);
-                          onSelectCategory?.('All');
-                          handleNavClick('Collections', 'collection-catalog-section');
-                        }}
-                        className="w-full text-left px-3.5 py-2 mb-1 rounded-xl bg-[#fdecef] hover:bg-[#fbd9e2] transition-colors flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="text-xs font-bold text-[#f81d5c]">
-                          All Kashmiri Collections
-                        </span>
-                        <span className="text-[10px] font-semibold text-[#f81d5c]">
-                          {CATALOG_PRODUCTS.length} DESIGNS
-                        </span>
-                      </button>
-                      {DRAWER_AND_MENU_CATEGORIES.map((cat) => (
-                        <button
-                          key={cat.id}
-                          type="button"
-                          role="menuitem"
-                          onClick={() => {
-                            setCollectionsOpen(false);
-                            onSelectCategory?.(cat.id);
-                            if (cat.id === 'Custom Designs') {
-                              handleNavClick('Custom Designs', 'contact-enquiry');
-                            } else {
-                              handleNavClick('Collections', 'collection-catalog-section');
-                            }
-                          }}
-                          className="w-full text-left px-3.5 py-2 rounded-xl hover:bg-[#f7eee6] transition-colors flex items-center justify-between cursor-pointer"
-                        >
-                          <span className="text-xs font-semibold text-[#17171a]">
-                            {cat.title}
-                          </span>
-                          <span className="text-[10px] font-medium text-[#736b65]">
-                            {cat.subtitle}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
             return (
               <a
                 key={item.label}
                 href={`#${item.targetId}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  setCollectionsOpen(false);
-                  handleNavClick(item.label, item.targetId);
+                  handleNavClick(item.label);
                 }}
                 className={`relative py-2 text-[14px] xl:text-[15px] tracking-[-0.01em] transition-colors whitespace-nowrap shrink-0 ${
                   isActive
@@ -435,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({
                     : 'text-[#262528] font-medium hover:text-[#f83a6b]'
                 }`}
               >
-                {item.label}
+                <span>{item.label}</span>
                 {isActive && (
                   <span className="absolute left-0 right-0 -bottom-0.5 h-[2px] bg-[#f83a6b] rounded-full" />
                 )}
@@ -503,9 +404,9 @@ export const Header: React.FC<HeaderProps> = ({
                           onSelectCategory?.(cat.id);
                           setSubmittedSearch(null);
                           if (cat.id === 'Custom Designs') {
-                            handleNavClick('Custom Designs', 'contact-enquiry');
+                            handleNavClick();
                           } else {
-                            handleNavClick('Collections', 'featured-collection');
+                            handleNavClick();
                           }
                         }}
                         className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#f4ebe2] transition-colors flex items-center justify-between cursor-pointer"
@@ -616,6 +517,10 @@ export const Header: React.FC<HeaderProps> = ({
                             src={getAssetUrl(item.image)}
                             alt={item.name}
                             referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = getAssetUrl('assets/aistudio/plp_prod_1.png');
+                            }}
                             className="w-11 h-11 rounded-xl object-cover object-top border border-[#e6dcd2] shrink-0"
                           />
                           <div className="min-w-0 flex-1">
@@ -731,7 +636,7 @@ export const Header: React.FC<HeaderProps> = ({
             compact
             onClick={() => {
               onSelectCollectionSlide?.(0);
-              handleNavClick('Home', 'home');
+              handleNavClick();
             }}
           />
 
@@ -856,9 +761,9 @@ export const Header: React.FC<HeaderProps> = ({
                         setSubmittedSearch(null);
                         setMobileSearchOpen(false);
                         if (cat.id === 'Custom Designs') {
-                          handleNavClick('Custom Designs', 'contact-enquiry');
+                          handleNavClick();
                         } else {
-                          handleNavClick('Collections', 'featured-collection');
+                          handleNavClick();
                         }
                       }}
                       className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#f4ebe2] transition-colors flex items-center justify-between"
@@ -920,7 +825,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => {
                       setMobileDrawerOpen(false);
                       onSelectCollectionSlide?.(0);
-                      handleNavClick('Home', 'home');
+                      handleNavClick();
                     }}
                   />
                   <button
@@ -940,106 +845,27 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   {NAV_ITEMS.map((item) => {
                     const isActive = currentActiveNav === item.label;
-
-                    if (item.hasDropdown) {
-                      return (
-                        <div key={item.label}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setActiveNav(item.label);
-                              setDrawerCollectionsOpen((prev) => !prev);
-                            }}
-                            aria-expanded={drawerCollectionsOpen}
-                            className={`w-full py-2.5 flex items-center justify-between text-left text-[17px] tracking-[-0.01em] transition-colors cursor-pointer ${
-                              isActive
-                                ? 'text-[#f83a6b] font-medium'
-                                : 'text-[#17171a] font-normal hover:text-[#f83a6b]'
-                            }`}
-                          >
-                            <span className="inline-flex items-center gap-2">
-                              <span>{item.label}</span>
-                              <ChevronDown
-                                className={`w-4 h-4 stroke-[2] transition-transform duration-200 ${
-                                  drawerCollectionsOpen ? 'rotate-180 text-[#f83a6b]' : ''
-                                }`}
-                              />
-                            </span>
-                            {isActive && (
-                              <ChevronRight className="w-4 h-4 text-[#f83a6b] stroke-[2]" />
-                            )}
-                          </button>
-
-                          {/* Expandable Collections Submenu */}
-                          {drawerCollectionsOpen && (
-                            <div className="pl-3 pr-1 pb-2 pt-0.5 space-y-1 border-l-2 border-[#f83a6b]/25 ml-1 my-1">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  onSelectCategory?.('All');
-                                  setMobileDrawerOpen(false);
-                                  handleNavClick('Collections', 'collection-catalog-section');
-                                }}
-                                className="w-full text-left py-1.5 px-2.5 rounded-lg text-[14px] font-semibold text-[#f83a6b] bg-[#fdecef]/70 hover:bg-[#fdecef] flex items-center justify-between transition-colors cursor-pointer"
-                              >
-                                <span>All Kashmiri Collections</span>
-                                <span className="text-[10px] uppercase tracking-wider text-[#f83a6b]">
-                                  {CATALOG_PRODUCTS.length} DESIGNS
-                                </span>
-                              </button>
-                              {DRAWER_AND_MENU_CATEGORIES.map((cat) => (
-                                <button
-                                  key={cat.id}
-                                  type="button"
-                                  onClick={() => {
-                                    onSelectCategory?.(cat.id);
-                                    setMobileDrawerOpen(false);
-                                    if (cat.id === 'Custom Designs') {
-                                      handleNavClick('Custom Designs', 'contact-enquiry');
-                                    } else {
-                                      handleNavClick('Collections', 'collection-catalog-section');
-                                    }
-                                  }}
-                                  className="w-full text-left py-1.5 px-2.5 rounded-lg text-[14px] text-[#3a3532] hover:text-[#f83a6b] hover:bg-[#f6eee6] flex items-center justify-between transition-colors cursor-pointer"
-                                >
-                                  <span>{cat.title}</span>
-                                  <span className="text-[10px] uppercase tracking-wider text-[#8a827c]">
-                                    {cat.subtitle}
-                                  </span>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }
-
-                  return (
-                    <button
-                      key={item.label}
-                      type="button"
-                      onClick={() => {
-                        setMobileDrawerOpen(false);
-                        handleNavClick(
-                          item.label,
-                          item.label === 'Custom Designs'
-                            ? 'contact-enquiry'
-                            : item.targetId
-                        );
-                      }}
-                      className={`w-full py-2.5 flex items-center justify-between text-left text-[17px] tracking-[-0.01em] transition-colors cursor-pointer ${
-                        isActive
-                          ? 'text-[#f83a6b] font-medium'
-                          : 'text-[#17171a] font-normal hover:text-[#f83a6b]'
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                      {isActive && (
-                        <ChevronRight className="w-4 h-4 text-[#f83a6b] stroke-[2]" />
-                      )}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => {
+                          setMobileDrawerOpen(false);
+                          handleNavClick(item.label);
+                        }}
+                        className={`w-full py-2.5 flex items-center justify-between text-left text-[17px] tracking-[-0.01em] transition-colors cursor-pointer ${
+                          isActive
+                            ? 'text-[#f83a6b] font-medium'
+                            : 'text-[#17171a] font-normal hover:text-[#f83a6b]'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {isActive && (
+                          <ChevronRight className="w-4 h-4 text-[#f83a6b] stroke-[2]" />
+                        )}
+                      </button>
+                    );
+                  })}
               </nav>
 
               {/* Account and Shopping Options in Exact Order: 1. Wishlist, 2. Shopping Bag, 3. Sign In */}
@@ -1127,7 +953,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileDrawerOpen(false);
-                    scrollToSection('contact');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   aria-label="Instagram"
                   className="text-[#17171a] hover:text-[#f83a6b] transition-colors"
@@ -1153,7 +979,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileDrawerOpen(false);
-                    scrollToSection('contact');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   aria-label="Facebook"
                   className="text-[#17171a] hover:text-[#f83a6b] transition-colors"
@@ -1173,7 +999,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileDrawerOpen(false);
-                    scrollToSection('contact');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   aria-label="Pinterest"
                   className="text-[#17171a] hover:text-[#f83a6b] transition-colors"
@@ -1193,7 +1019,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileDrawerOpen(false);
-                    scrollToSection('contact');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   aria-label="YouTube"
                   className="text-[#17171a] hover:text-[#f83a6b] transition-colors"
@@ -1308,6 +1134,10 @@ export const Header: React.FC<HeaderProps> = ({
                       src={getAssetUrl(piece.image)}
                       alt={piece.name}
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = getAssetUrl('assets/aistudio/plp_prod_1.png');
+                      }}
                       className="w-12 h-12 rounded-full object-cover border border-[#e6dcd2] shrink-0"
                     />
                     <div className="min-w-0 flex-1">
@@ -1392,6 +1222,10 @@ export const Header: React.FC<HeaderProps> = ({
                         src={getAssetUrl(item.image)}
                         alt={item.name}
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = getAssetUrl('assets/aistudio/plp_prod_1.png');
+                        }}
                         className="w-12 h-12 rounded-xl object-cover object-top border border-[#e6dcd2] shrink-0"
                       />
                       <div className="min-w-0 flex-1">

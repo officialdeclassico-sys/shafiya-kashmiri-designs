@@ -8,27 +8,18 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    page: NavItemKey,
-    targetId: string
+    page: NavItemKey
   ) => {
+    e.preventDefault();
     if (onNavigate) {
-      e.preventDefault();
       onNavigate(page);
-      window.setTimeout(() => {
-        if (targetId === 'home') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          const el = document.getElementById(targetId);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          else window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }, 40);
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <footer
-      id="contact"
+      id="shafiya-footer"
       className="w-full bg-[#f7f1ea] border-t border-[#eadfd4] pt-12 pb-10 px-4 sm:px-6 lg:px-[4%]"
     >
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-[#e5d9cd]">
@@ -69,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="flex items-center gap-4">
           <a
             href="#home"
-            onClick={(e) => handleLinkClick(e, 'Home', 'home')}
+            onClick={(e) => handleLinkClick(e, 'Home')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Home
@@ -77,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <span aria-hidden="true">·</span>
           <a
             href="#collections"
-            onClick={(e) => handleLinkClick(e, 'Collections', 'collections')}
+            onClick={(e) => handleLinkClick(e, 'Collections')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Collections
@@ -85,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <span aria-hidden="true">·</span>
           <a
             href="#custom-designs"
-            onClick={(e) => handleLinkClick(e, 'Custom Designs', 'contact-enquiry')}
+            onClick={(e) => handleLinkClick(e, 'Custom Designs')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Custom Designs
@@ -93,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <span aria-hidden="true">·</span>
           <a
             href="#our-story"
-            onClick={(e) => handleLinkClick(e, 'Our Story', 'our-story')}
+            onClick={(e) => handleLinkClick(e, 'Our Story')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Our Story
@@ -101,7 +92,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <span aria-hidden="true">·</span>
           <a
             href="#contact"
-            onClick={(e) => handleLinkClick(e, 'Contact', 'contact')}
+            onClick={(e) => handleLinkClick(e, 'Contact')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Contact Us
