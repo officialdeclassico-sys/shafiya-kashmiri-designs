@@ -112,13 +112,44 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
           />
         </div>
 
+        {/* MOBILE & TABLET COMPOSITION (< lg) — Compact Horizontal Landscape Banner */}
+        <div className="lg:hidden relative w-full aspect-[16/6.2] sm:aspect-[16/5.5] md:aspect-[1312/472] max-h-[380px] overflow-hidden bg-[#fcf8f3] select-none">
+          <img
+            src={getAssetUrl('assets/aistudio/contact_hero_visual.png')}
+            alt="Kashmiri fashion model wearing embroidered floral attire"
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+          />
+          <div className="absolute left-[4.8%] top-[12%] sm:top-[16%] z-20 w-[52%] sm:w-[42%] pointer-events-auto">
+            <p className="font-ui text-[clamp(6.5px,1.8vw,11.5px)] font-semibold uppercase tracking-[0.24em] text-[#f42a60] leading-[1.3]">
+              THE ART OF KASHMIR · OUR STORY
+            </p>
+            <div className="relative mt-[0.5vw]">
+              <h1
+                id="our-story-hero-heading"
+                className="font-editorial text-[clamp(18px,4.8vw,42px)] font-normal text-[#141416] leading-[0.96] tracking-[-0.02em]"
+              >
+                A Legacy Woven With Love
+              </h1>
+              <p className="font-script text-[#f82a62] text-[clamp(16px,4.2vw,36px)] leading-none block -rotate-2 mt-1">
+                From Kashmir, With Grace
+              </p>
+            </div>
+            <p className="mt-[0.5vw] font-ui text-[clamp(7px,1.5vw,11.5px)] font-normal text-[#262423] leading-[1.35] line-clamp-2 max-w-[260px]">
+              Rooted in the timeless artistry of Kashmir, Shafiya brings generations of textile heritage.
+            </p>
+          </div>
+        </div>
+
+        {/* DESKTOP COMPOSITION (lg and up) */}
+        <div className="hidden lg:block relative">
         {/* Far-Left Decorative Botanical Line-Art Flowers */}
         <img
           src={getAssetUrl('assets/aistudio/contact_hero_left_flowers.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
-          className="hidden lg:block absolute left-0 top-[15%] w-16 xl:w-20 h-auto object-contain pointer-events-none select-none z-10"
+          className="absolute left-0 top-[15%] w-16 xl:w-20 h-auto object-contain pointer-events-none select-none z-10"
         />
 
         {/* Soft Ambient Pastel Watercolor Brush Accents Across Full Width */}
@@ -295,6 +326,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
 

@@ -390,6 +390,7 @@ export default function App() {
         />
       ) : currentPage === 'Contact' || currentPage === 'Custom Designs' ? (
         <ContactPage
+          isCustomDesigns={currentPage === 'Custom Designs'}
           onOpenSignIn={() => setSignInOpen(true)}
           onNavigate={handleNavigate}
           onSelectCategory={(cat) => {

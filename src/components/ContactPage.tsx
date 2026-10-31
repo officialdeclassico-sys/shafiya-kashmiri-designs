@@ -42,6 +42,7 @@ interface ContactPageProps {
   onToggleHeaderWishlist?: () => void;
   onToggleWishlistItem?: (id: string) => void;
   initialEnquiryType?: string;
+  isCustomDesigns?: boolean;
 }
 
 const ENQUIRY_TYPES = [
@@ -126,6 +127,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   onToggleHeaderWishlist,
   onToggleWishlistItem,
   initialEnquiryType = '',
+  isCustomDesigns = false,
 }) => {
   const [scriptImgError, setScriptImgError] = useState(false);
 
@@ -280,7 +282,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           <div className="absolute left-[6.6%] top-[18.2%] z-20 w-[37.5%] pointer-events-auto">
             {/* Small Pink Uppercase Eyebrow */}
             <p className="font-ui text-[clamp(9.5px,0.78vw,14px)] font-semibold uppercase tracking-[0.26em] text-[#f42a60] leading-snug">
-              WE&apos;D LOVE TO HEAR FROM YOU
+              {isCustomDesigns ? 'BESPOKE COUTURE · CUSTOM DESIGNS' : "WE'D LOVE TO HEAR FROM YOU"}
             </p>
 
             {/* Large Elegant Serif Headline */}
@@ -288,12 +290,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               id="contact-hero-heading"
               className="mt-[0.35vw] font-editorial text-[clamp(42px,4.5vw,84px)] font-normal text-[#121829] leading-[0.98] tracking-[-0.02em]"
             >
-              Get In Touch
+              {isCustomDesigns ? 'Custom Designs' : 'Get In Touch'}
             </h1>
 
-            {/* Pink Handwritten Script: "Let's Create Something Beautiful" */}
+            {/* Pink Handwritten Script */}
             <div className="mt-[0.15vw] mb-[0.75vw]">
-              {!scriptImgError ? (
+              {isCustomDesigns ? (
+                <p className="font-script text-[clamp(34px,3.4vw,62px)] text-[#f82a62] leading-tight -rotate-2">
+                  Your Vision, Our Craft
+                </p>
+              ) : !scriptImgError ? (
                 <div>
                   <span className="sr-only">
                     Let&apos;s Create Something Beautiful
@@ -316,8 +322,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
             {/* Welcoming Description */}
             <p className="font-ui text-[clamp(11.5px,0.96vw,17.5px)] font-normal text-[#262936] leading-[1.58] max-w-[92%]">
-              Whether you have a question, a custom design idea, or simply want
-              to know more about our collections, we&apos;re here to help.
+              {isCustomDesigns
+                ? 'Commission a bespoke Kashmiri outfit or bridal shawl tailored with master Sozni and Aari embroidery to your exact measurements.'
+                : "Whether you have a question, a custom design idea, or simply want to know more about our collections, we're here to help."}
             </p>
 
             {/* Three Feature Highlights Row */}
@@ -364,10 +371,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           </div>
         </div>
 
-        {/* TABLET & MOBILE HERO COMPOSITION (< lg) */}
+        {/* TABLET & MOBILE COMPOSITION (< lg) — Horizontal Landscape Banner matching Homepage */}
         <div className="lg:hidden relative w-full bg-[#fcfbf9] overflow-hidden">
           <Header
-            activePage="Contact"
+            activePage={isCustomDesigns ? 'Custom Designs' : 'Contact'}
             onNavigate={onNavigate}
             onOpenSignIn={onOpenSignIn}
             onSelectCategory={onSelectCategory}
@@ -381,81 +388,45 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             onOpenBagPage={onOpenBagPage}
           />
 
-          <div className="px-5 sm:px-8 pt-4 pb-6">
-            <p className="font-ui text-[11px] sm:text-xs font-semibold uppercase tracking-[0.26em] text-[#f42a60] mb-1.5">
-              WE&apos;D LOVE TO HEAR FROM YOU
-            </p>
+          <div className="relative w-full aspect-[16/6.2] sm:aspect-[16/5.5] md:aspect-[1312/472] max-h-[380px] overflow-hidden bg-[#fcfbf9] select-none">
+            <img
+              src={getAssetUrl('assets/aistudio/contact_hero_clean_canvas.png')}
+              alt="Kashmir Dal Lake houseboats and snow-capped mountains alongside a fashion model wearing a colourful floral embroidered Kashmiri shawl"
+              referrerPolicy="no-referrer"
+              className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+            />
 
-            <h1 className="font-editorial text-5xl sm:text-6xl font-normal text-[#121829] leading-[1.02] tracking-[-0.02em]">
-              Get In Touch
-            </h1>
-
-            <div className="mt-1 mb-3">
-              {!scriptImgError ? (
-                <img
-                  src={getAssetUrl('assets/aistudio/contact_script_lets_create.png')}
-                  alt="Let's Create Something Beautiful"
-                  referrerPolicy="no-referrer"
-                  onError={() => setScriptImgError(true)}
-                  className="w-full max-w-[340px] sm:max-w-[420px] h-auto object-contain -ml-1 select-none pointer-events-none"
-                />
-              ) : (
-                <p className="font-script text-4xl sm:text-5xl text-[#f82a62] leading-tight -rotate-2">
-                  Let&apos;s Create Something Beautiful
-                </p>
-              )}
-            </div>
-
-            <p className="font-ui text-[13.5px] sm:text-[15px] text-[#262936] leading-[1.62] max-w-xl">
-              Whether you have a question, a custom design idea, or simply want
-              to know more about our collections, we&apos;re here to help.
-            </p>
-
-            <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
-              <div className="space-y-1">
-                <div className="text-[#f82a62]">
-                  <MessageSquareText className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
+            <div className="absolute left-[4.8%] top-[12%] sm:top-[16%] z-20 w-[52%] sm:w-[42%] pointer-events-auto">
+              <p className="font-ui text-[clamp(6.5px,1.8vw,11.5px)] font-semibold uppercase tracking-[0.24em] text-[#f42a60] leading-[1.3]">
+                {isCustomDesigns ? 'BESPOKE COUTURE' : "WE'D LOVE TO HEAR"}
+              </p>
+              <div className="relative mt-[0.5vw]">
+                <h1 className="font-editorial text-[clamp(18px,4.8vw,42px)] font-normal text-[#121829] leading-[0.96] tracking-[-0.02em]">
+                  {isCustomDesigns ? 'Custom Designs' : 'Get In Touch'}
+                </h1>
+                <div className="mt-[0.2vw]">
+                  {isCustomDesigns ? (
+                    <span className="font-script text-[#f82a62] text-[clamp(15px,3.8vw,32px)] leading-none block -rotate-2">
+                      Your Vision, Our Craft
+                    </span>
+                  ) : !scriptImgError ? (
+                    <img
+                      src={getAssetUrl('assets/aistudio/contact_script_lets_create.png')}
+                      alt="Let's Create Something Beautiful"
+                      referrerPolicy="no-referrer"
+                      onError={() => setScriptImgError(true)}
+                      className="w-[90%] max-w-[140px] sm:max-w-[180px] h-auto object-contain -ml-0.5 select-none pointer-events-none"
+                    />
+                  ) : (
+                    <span className="font-script text-[#f82a62] text-[clamp(16px,4.2vw,36px)] leading-none block -rotate-2">
+                      Let&apos;s Create
+                    </span>
+                  )}
                 </div>
-                <h2 className="font-ui text-xs sm:text-[13px] font-bold text-[#141824] leading-snug">
-                  Quick Response
-                </h2>
-                <p className="font-ui text-[11px] sm:text-xs text-[#686b75] leading-snug">
-                  We aim to respond as soon as possible
-                </p>
               </div>
-
-              <div className="space-y-1">
-                <div className="text-[#f82a62]">
-                  <Heart className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
-                </div>
-                <h2 className="font-ui text-xs sm:text-[13px] font-bold text-[#141824] leading-snug">
-                  Personalised Support
-                </h2>
-                <p className="font-ui text-[11px] sm:text-xs text-[#686b75] leading-snug">
-                  Guidance for your unique requirements
-                </p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="text-[#f82a62]">
-                  <Gem className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
-                </div>
-                <h2 className="font-ui text-xs sm:text-[13px] font-bold text-[#141824] leading-snug">
-                  Custom Design Enquiries
-                </h2>
-                <p className="font-ui text-[11px] sm:text-xs text-[#686b75] leading-snug">
-                  Let&apos;s bring your vision to life
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 -mx-5 sm:mx-0">
-              <img
-                src={getAssetUrl('assets/aistudio/contact_hero_visual.png')}
-                alt="Kashmir Dal Lake and fashion model in colourful embroidered Kashmiri shawl"
-                referrerPolicy="no-referrer"
-                className="w-full h-auto object-cover sm:rounded-3xl"
-              />
+              <p className="mt-[0.5vw] font-ui text-[clamp(7px,1.5vw,11.5px)] font-normal text-[#262936] leading-[1.35] line-clamp-2 max-w-[260px]">
+                {isCustomDesigns ? 'Commission a bespoke Kashmiri outfit tailored to your measurements.' : "Whether you have a question or a custom design idea, we're here to help."}
+              </p>
             </div>
           </div>
         </div>
