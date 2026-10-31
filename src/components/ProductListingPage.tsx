@@ -351,7 +351,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
       id="collection-catalog-section"
       className={`${
         embeddedInHomepage ? '' : 'min-h-screen'
-      } w-full bg-[#fcf9f5] flex flex-col justify-between overflow-x-hidden`}
+      } w-full bg-[#fcf9f5] flex flex-col justify-between overflow-x-clip`}
     >
       {/* =====================================================================
           1. SHARED WEBSITE HEADER & CATEGORY HERO BANNER
@@ -613,54 +613,54 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
         {/* =================================================================
              MAIN 2-COLUMN LAYOUT: LEFT FILTER SIDEBAR + RIGHT PRODUCT GRID
             ================================================================= */}
-        <div className="mt-5 flex flex-col lg:flex-row items-start gap-6 xl:gap-7">
-          {/* LEFT-SIDE FILTER PANEL (Desktop lg:block) */}
+        <div className="mt-5 flex flex-col lg:flex-row items-start gap-6 xl:gap-8">
+          {/* LEFT-SIDE FILTER PANEL (Desktop lg:block, Sticky with independent internal scroll) */}
           <aside
             aria-label="Product Filters"
-            className="hidden lg:block w-[220px] xl:w-[240px] shrink-0 rounded-2xl bg-white border border-[#ece3da] shadow-[0_2px_12px_rgba(0,0,0,0.02)] p-4"
+            className="hidden lg:block w-[280px] xl:w-[300px] 2xl:w-[320px] shrink-0 sticky top-6 self-start max-h-[calc(100vh-2.5rem)] overflow-y-auto custom-filter-scrollbar overscroll-contain rounded-[24px] bg-white border border-[#ece3da] shadow-[0_4px_20px_rgba(24,24,27,0.03)] p-5 xl:p-6"
           >
             {/* Filter Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#f0e8df]">
-              <span className="font-ui text-sm font-bold text-[#141824]">
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#f0e8df]">
+              <span className="font-ui text-[15px] xl:text-base font-bold text-[#141824] tracking-[-0.01em]">
                 Filters
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 {!isUnfiltered && (
                   <button
                     type="button"
                     onClick={handleResetFilters}
-                    className="text-[11px] font-semibold text-[#f81d5c] hover:underline cursor-pointer"
+                    className="text-xs xl:text-[13px] font-semibold text-[#f81d5c] hover:underline cursor-pointer"
                   >
                     Reset
                   </button>
                 )}
-                <SlidersHorizontal className="w-4 h-4 text-[#57524e]" />
+                <SlidersHorizontal className="w-4 h-4 xl:w-4.5 xl:h-4.5 text-[#57524e]" />
               </div>
             </div>
 
             {/* 1. Category Filter (All 10 Categories) */}
-            <div className="py-3.5 border-b border-[#f0e8df]">
+            <div className="py-4 xl:py-4.5 border-b border-[#f0e8df]">
               <button
                 type="button"
                 onClick={() => toggleSection('category')}
                 aria-expanded={openSections.category}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Category</span>
                 {openSections.category ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.category && (
-                <div className="mt-2.5 space-y-2">
+                <div className="mt-3 space-y-2.5">
                   {CATEGORY_FILTER_OPTIONS.map((cat) => {
                     const checked = selectedCategories.includes(cat);
                     return (
                       <label
                         key={cat}
-                        className="flex items-center gap-2.5 text-xs text-[#4a4542] hover:text-[#141824] cursor-pointer select-none"
+                        className="group flex items-center gap-3 text-[13px] xl:text-[14px] text-[#423d39] hover:text-[#141824] cursor-pointer select-none py-0.5"
                       >
                         <input
                           type="checkbox"
@@ -675,17 +675,19 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                           className="sr-only"
                         />
                         <span
-                          className={`w-4 h-4 rounded-[4px] border shrink-0 flex items-center justify-center transition-colors ${
+                          className={`w-[18px] h-[18px] rounded-[5px] border shrink-0 flex items-center justify-center transition-all ${
                             checked
-                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white'
-                              : 'bg-white border-[#d6cdc4]'
+                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white shadow-2xs'
+                              : 'bg-white border-[#d1c7bc] group-hover:border-[#f81d5c]'
                           }`}
                         >
-                          {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
+                          {checked && <Check className="w-3.5 h-3.5 stroke-[2.8]" />}
                         </span>
                         <span
                           className={
-                            checked ? 'font-medium text-[#141824]' : ''
+                            checked
+                              ? 'font-semibold text-[#141824]'
+                              : 'transition-colors'
                           }
                         >
                           {cat}
@@ -698,22 +700,22 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             </div>
 
             {/* 2. Price Range Filter */}
-            <div className="py-3.5 border-b border-[#f0e8df]">
+            <div className="py-4 xl:py-4.5 border-b border-[#f0e8df]">
               <button
                 type="button"
                 onClick={() => toggleSection('price')}
                 aria-expanded={openSections.price}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Price Range</span>
                 {openSections.price ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.price && (
-                <div className="mt-3 space-y-2">
+                <div className="mt-3.5 space-y-2.5">
                   <div className="relative flex items-center">
                     <input
                       type="range"
@@ -723,10 +725,10 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                       value={maxPrice}
                       onChange={(e) => setMaxPrice(Number(e.target.value))}
                       aria-label="Maximum price range"
-                      className="w-full h-1.5 bg-[#fce2ea] rounded-lg appearance-none cursor-pointer accent-[#f81d5c]"
+                      className="w-full h-2 bg-[#fce2ea] rounded-lg appearance-none cursor-pointer accent-[#f81d5c]"
                     />
                   </div>
-                  <div className="flex items-center justify-between text-[11px] font-medium text-[#68635e] tabular-nums">
+                  <div className="flex items-center justify-between text-xs xl:text-[13px] font-semibold text-[#524d48] tabular-nums">
                     <span>₹500</span>
                     <span>–</span>
                     <span>₹{maxPrice.toLocaleString('en-IN')}</span>
@@ -736,28 +738,28 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             </div>
 
             {/* 3. Fabric Filter */}
-            <div className="py-3.5 border-b border-[#f0e8df]">
+            <div className="py-4 xl:py-4.5 border-b border-[#f0e8df]">
               <button
                 type="button"
                 onClick={() => toggleSection('fabric')}
                 aria-expanded={openSections.fabric}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Fabric</span>
                 {openSections.fabric ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.fabric && (
-                <div className="mt-2.5 space-y-2">
+                <div className="mt-3 space-y-2.5">
                   {FABRIC_FILTER_OPTIONS.map((fab) => {
                     const checked = selectedFabrics.includes(fab);
                     return (
                       <label
                         key={fab}
-                        className="flex items-center gap-2.5 text-xs text-[#4a4542] hover:text-[#141824] cursor-pointer select-none"
+                        className="group flex items-center gap-3 text-[13px] xl:text-[14px] text-[#423d39] hover:text-[#141824] cursor-pointer select-none py-0.5"
                       >
                         <input
                           type="checkbox"
@@ -772,17 +774,19 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                           className="sr-only"
                         />
                         <span
-                          className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${
+                          className={`w-[18px] h-[18px] rounded-[5px] border shrink-0 flex items-center justify-center transition-all ${
                             checked
-                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white'
-                              : 'bg-white border-[#d6cdc4]'
+                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white shadow-2xs'
+                              : 'bg-white border-[#d1c7bc] group-hover:border-[#f81d5c]'
                           }`}
                         >
-                          {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
+                          {checked && <Check className="w-3.5 h-3.5 stroke-[2.8]" />}
                         </span>
                         <span
                           className={
-                            checked ? 'font-medium text-[#141824]' : ''
+                            checked
+                              ? 'font-semibold text-[#141824]'
+                              : 'transition-colors'
                           }
                         >
                           {fab}
@@ -795,22 +799,22 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             </div>
 
             {/* 4. Size Filter */}
-            <div className="py-3.5 border-b border-[#f0e8df]">
+            <div className="py-4 xl:py-4.5 border-b border-[#f0e8df]">
               <button
                 type="button"
                 onClick={() => toggleSection('size')}
                 aria-expanded={openSections.size}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Size</span>
                 {openSections.size ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.size && (
-                <div className="mt-2.5 grid grid-cols-3 gap-1.5">
+                <div className="mt-3 grid grid-cols-3 gap-2">
                   {ALL_SIZES.map((sz) => {
                     const active = selectedSizes.includes(sz);
                     return (
@@ -820,10 +824,10 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                         onClick={() =>
                           toggleArrayFilter(selectedSizes, setSelectedSizes, sz)
                         }
-                        className={`h-7 rounded-md text-[11px] font-semibold border transition-colors cursor-pointer ${
+                        className={`h-8.5 xl:h-9 rounded-lg text-xs xl:text-[13px] font-semibold border transition-all cursor-pointer ${
                           active
-                            ? 'bg-[#f81d5c] text-white border-[#f81d5c]'
-                            : 'bg-white text-[#373a47] border-[#dfd7ce] hover:border-[#f81d5c]'
+                            ? 'bg-[#f81d5c] text-white border-[#f81d5c] shadow-2xs'
+                            : 'bg-white text-[#373a47] border-[#dfd7ce] hover:border-[#f81d5c] hover:text-[#f81d5c]'
                         }`}
                       >
                         {sz}
@@ -835,22 +839,22 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             </div>
 
             {/* 5. Colour Filter */}
-            <div className="py-3.5 border-b border-[#f0e8df]">
+            <div className="py-4 xl:py-4.5 border-b border-[#f0e8df]">
               <button
                 type="button"
                 onClick={() => toggleSection('colour')}
                 aria-expanded={openSections.colour}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Colour</span>
                 {openSections.colour ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.colour && (
-                <div className="mt-2.5 space-y-2">
+                <div className="mt-3 space-y-2.5">
                   {COLOUR_FILTER_OPTIONS.map((col) => {
                     const active = selectedColours.includes(col.name);
                     return (
@@ -864,19 +868,19 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                             col.name
                           )
                         }
-                        className="w-full flex items-center gap-2.5 text-left text-xs text-[#4a4542] hover:text-[#141824] cursor-pointer"
+                        className="w-full flex items-center gap-3 text-left text-[13px] xl:text-[14px] text-[#423d39] hover:text-[#141824] cursor-pointer py-0.5"
                       >
                         <span
                           style={{ backgroundColor: col.hex }}
-                          className={`w-4 h-4 rounded-full border shrink-0 ${
+                          className={`w-[18px] h-[18px] rounded-full border shrink-0 transition-transform ${
                             active
-                              ? 'ring-2 ring-[#f81d5c] ring-offset-1 border-white'
+                              ? 'ring-2 ring-[#f81d5c] ring-offset-2 border-white scale-105'
                               : 'border-black/15'
                           }`}
                         />
                         <span
                           className={
-                            active ? 'font-semibold text-[#f81d5c]' : ''
+                            active ? 'font-semibold text-[#f81d5c]' : 'transition-colors'
                           }
                         >
                           {col.name}
@@ -889,28 +893,28 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             </div>
 
             {/* 6. Work Type Filter */}
-            <div className="pt-3.5">
+            <div className="pt-4 xl:pt-4.5">
               <button
                 type="button"
                 onClick={() => toggleSection('workType')}
                 aria-expanded={openSections.workType}
-                className="w-full flex items-center justify-between text-left font-ui text-xs font-bold text-[#141824] cursor-pointer"
+                className="w-full flex items-center justify-between text-left font-ui text-[13.5px] xl:text-[14.5px] font-bold text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
                 <span>Work Type</span>
                 {openSections.workType ? (
-                  <ChevronUp className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronUp className="w-4 h-4 text-[#57524e]" />
                 ) : (
-                  <ChevronDown className="w-3.5 h-3.5 text-[#57524e]" />
+                  <ChevronDown className="w-4 h-4 text-[#57524e]" />
                 )}
               </button>
               {openSections.workType && (
-                <div className="mt-2.5 space-y-2">
+                <div className="mt-3 space-y-2.5">
                   {WORK_TYPE_OPTIONS.map((wt) => {
                     const checked = selectedWorkTypes.includes(wt);
                     return (
                       <label
                         key={wt}
-                        className="flex items-center gap-2.5 text-xs text-[#4a4542] hover:text-[#141824] cursor-pointer select-none"
+                        className="group flex items-center gap-3 text-[13px] xl:text-[14px] text-[#423d39] hover:text-[#141824] cursor-pointer select-none py-0.5"
                       >
                         <input
                           type="checkbox"
@@ -925,17 +929,19 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                           className="sr-only"
                         />
                         <span
-                          className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${
+                          className={`w-[18px] h-[18px] rounded-[5px] border shrink-0 flex items-center justify-center transition-all ${
                             checked
-                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white'
-                              : 'bg-white border-[#d6cdc4]'
+                              ? 'bg-[#f81d5c] border-[#f81d5c] text-white shadow-2xs'
+                              : 'bg-white border-[#d1c7bc] group-hover:border-[#f81d5c]'
                           }`}
                         >
-                          {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
+                          {checked && <Check className="w-3.5 h-3.5 stroke-[2.8]" />}
                         </span>
                         <span
                           className={
-                            checked ? 'font-medium text-[#141824]' : ''
+                            checked
+                              ? 'font-semibold text-[#141824]'
+                              : 'transition-colors'
                           }
                         >
                           {wt}
@@ -972,7 +978,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
               <div
                 className={
                   viewMode === 'grid'
-                    ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-5'
+                    ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6'
                     : 'flex flex-col gap-4'
                 }
               >

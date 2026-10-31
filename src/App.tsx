@@ -78,8 +78,87 @@ const INITIAL_REFERENCE_BAG_ITEMS: BagItem[] = [
   },
 ];
 
+function parseRouteFromLocation(): {
+  page: AppView;
+  productSlug?: string;
+} {
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+  let path = window.location.pathname;
+  if (base && path.startsWith(base)) {
+    path = path.slice(base.length);
+  }
+  const cleanPath = path.replace(/^\/+|\/+$/g, '').toLowerCase();
+  const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+  const route = cleanPath || hash;
+
+  if (route === 'our-story' || route.startsWith('our-story')) {
+    return { page: 'Our Story' };
+  }
+  if (route === 'custom-designs' || route.startsWith('custom-designs')) {
+    return { page: 'Custom Designs' };
+  }
+  if (
+    route === 'contact' ||
+    route === 'contact-us' ||
+    route.startsWith('contact')
+  ) {
+    return { page: 'Contact' };
+  }
+  if (route === 'collections' || route.startsWith('collections')) {
+    return { page: 'Collections' };
+  }
+  if (route === 'bag' || route === 'cart') {
+    return { page: 'Bag' };
+  }
+  if (route === 'checkout') {
+    return { page: 'Checkout' };
+  }
+  if (route.startsWith('product/')) {
+    const slug = route.replace('product/', '');
+    return { page: 'ProductDetails', productSlug: slug };
+  }
+  return { page: 'Home' };
+}
+
+function getPathForPage(page: AppView, productSlug?: string): string {
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+  let subpath = '';
+  switch (page) {
+    case 'Our Story':
+      subpath = '/our-story';
+      break;
+    case 'Custom Designs':
+      subpath = '/custom-designs';
+      break;
+    case 'Contact':
+      subpath = '/contact';
+      break;
+    case 'Collections':
+      subpath = '/collections';
+      break;
+    case 'Bag':
+      subpath = '/bag';
+      break;
+    case 'Checkout':
+      subpath = '/checkout';
+      break;
+    case 'OrderConfirmation':
+      subpath = '/checkout';
+      break;
+    case 'ProductDetails':
+      subpath = productSlug ? `/product/${productSlug}` : '/collections';
+      break;
+    case 'Home':
+    default:
+      subpath = '/';
+      break;
+  }
+  return `${base}${subpath}` || '/';
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<AppView>('Home');
+  const initialRoute = parseRouteFromLocation();
+  const [currentPage, setCurrentPage] = useState<AppView>(initialRoute.page);
   const [signInOpen, setSignInOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
@@ -125,13 +204,30 @@ export default function App() {
 
   // Active Product Details Page state
   const [activeProductSlug, setActiveProductSlug] = useState<string>(
-    CATALOG_PRODUCTS[0].slug
+    initialRoute.productSlug || CATALOG_PRODUCTS[0].slug
   );
   const [activeProductColourIdx, setActiveProductColourIdx] =
     useState<number>(0);
   const [activeProductSize, setActiveProductSize] = useState<
     SizeOption | undefined
   >(CATALOG_PRODUCTS[0].defaultSize);
+
+  // Synchronize route on browser back/forward and hash changes
+  useEffect(() => {
+    const handlePopState = () => {
+      const current = parseRouteFromLocation();
+      setCurrentPage(current.page);
+      if (current.productSlug) {
+        setActiveProductSlug(current.productSlug);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
 
   const handleToggleWishlist = (id: string) => {
     setWishlistIds((prev) =>
@@ -223,16 +319,28 @@ export default function App() {
 
   const handleNavigate = (page: NavItemKey) => {
     setCurrentPage(page);
+    const newPath = getPathForPage(page);
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenBagPage = () => {
     setCurrentPage('Bag');
+    const newPath = getPathForPage('Bag');
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenCheckoutPage = () => {
     setCurrentPage('Checkout');
+    const newPath = getPathForPage('Checkout');
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -245,11 +353,15 @@ export default function App() {
     setActiveProductColourIdx(colourIdx);
     setActiveProductSize(size);
     setCurrentPage('ProductDetails');
+    const newPath = getPathForPage('ProductDetails', productSlug);
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <main className="w-full bg-[#fcfaf6] overflow-x-hidden">
+    <main className="w-full bg-[#fcfaf6] overflow-x-clip">
       {currentPage === 'Bag' ||
       currentPage === 'Checkout' ||
       currentPage === 'OrderConfirmation' ? (
@@ -268,8 +380,7 @@ export default function App() {
           onAddSampleBagItem={handleAddSampleBagItem}
           onOpenProduct={(slug) => handleOpenProduct(slug)}
           onContinueShopping={() => {
-            setCurrentPage('Collections');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            handleNavigate('Collections');
           }}
           onNavigate={handleNavigate}
           onOpenSignIn={() => setSignInOpen(true)}
@@ -284,9 +395,9 @@ export default function App() {
           onSelectCategory={(cat) => {
             setSelectedCategory(cat);
             if (cat === 'Custom Designs') {
-              setCurrentPage('Custom Designs');
+              handleNavigate('Custom Designs');
             } else {
-              setCurrentPage('Collections');
+              handleNavigate('Collections');
             }
           }}
           bagItems={bagItems}
@@ -308,9 +419,9 @@ export default function App() {
           onSelectCategory={(cat) => {
             setSelectedCategory(cat);
             if (cat === 'Custom Designs') {
-              setCurrentPage('Custom Designs');
+              handleNavigate('Custom Designs');
             } else {
-              setCurrentPage('Collections');
+              handleNavigate('Collections');
             }
           }}
           bagItems={bagItems}
@@ -347,8 +458,7 @@ export default function App() {
           onNavigate={handleNavigate}
           onBackToListing={(cat) => {
             if (cat) setSelectedCategory(cat);
-            setCurrentPage('Collections');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            handleNavigate('Collections');
           }}
           onOpenProduct={handleOpenProduct}
           onSelectCategory={setSelectedCategory}
@@ -372,8 +482,7 @@ export default function App() {
             onSelectCategory={(cat) => {
               setSelectedCategory(cat);
               if (cat === 'Custom Designs') {
-                setCurrentPage('Custom Designs');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                handleNavigate('Custom Designs');
               } else {
                 document
                   .getElementById('collection-catalog-section')

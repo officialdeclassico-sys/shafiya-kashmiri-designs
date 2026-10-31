@@ -348,10 +348,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
       </div>
 
       {/* =====================================================================
-          TABLET & MOBILE COMPOSITION (< lg) — Matches Mobile Reference Screens 1 & 3
+          TABLET & MOBILE COMPOSITION (< lg) — Horizontal Landscape Composition
           ===================================================================== */}
       <div className="lg:hidden relative w-full bg-[#fcf8f3] overflow-hidden">
-        {/* Top Mobile Header (Closed state: Logo + Search Icon + Hamburger ONLY; Expandable Search; Slide-Out Drawer) */}
+        {/* Top Mobile Header (Logo + Search Icon + Hamburger; Expandable Search; Slide-Out Drawer) */}
         <Header
           activePage={activePage}
           onNavigate={onNavigate}
@@ -368,126 +368,184 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
           onOpenBagPage={onOpenBagPage}
         />
 
-        {/* Hero Main Content Container matching Mobile Reference Screens 1 & 3 */}
-        <div className="relative px-5 sm:px-7 pt-3 pb-4 max-w-2xl mx-auto">
-          {/* Decorative Turquoise & Floral Accents on Right matching Mobile Reference */}
-          <div
-            aria-hidden="true"
-            className="absolute top-8 -right-8 w-44 h-64 rounded-full bg-[#b5f2ec]/55 blur-2xl pointer-events-none"
+        {/* Compact Horizontal Landscape Banner for Mobile & Tablet */}
+        <div className="relative w-full aspect-[16/6.2] sm:aspect-[16/5.5] md:aspect-[1918/820] max-h-[400px] overflow-hidden bg-[#fcf8f3] select-none">
+          {/* Reference Visual Canvas Layer */}
+          <motion.img
+            key={`mobile-canvas-${currentSlide}`}
+            src={getAssetUrl('assets/aistudio/hero_clean_canvas.png')}
+            alt="Joyful woman wearing handcrafted floral embroidered Kashmiri ensemble beside Kashmir embroidery and Dal Lake collage"
+            referrerPolicy="no-referrer"
+            initial={{ opacity: 0.92, scale: 1.008 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            style={{ filter: canvasFilterStyle }}
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
           />
 
-          {/* 1. Editorial Eyebrow, Headline + "Beautiful" Script, and Description */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`mobile-text-${slide.id}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28 }}
-              className="relative z-10"
-            >
-              <p className="font-ui text-[11px] sm:text-xs font-medium uppercase tracking-[0.26em] text-[#f43f70] leading-[1.65]">
-                <span className="block">{slide.eyebrowLine1}</span>
-                <span className="block">{slide.eyebrowLine2}</span>
-              </p>
+          {/* Left Editorial Content Block */}
+          <div className="absolute left-[4.8%] top-[11%] sm:top-[15%] md:top-[18%] z-20 w-[46%] sm:w-[38%] md:w-[32%] pointer-events-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`mobile-left-${slide.id}`}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Small uppercase eyebrow */}
+                <p className="font-ui text-[clamp(6.5px,1.8vw,11.5px)] font-semibold uppercase tracking-[0.24em] text-[#f43f70] leading-[1.3]">
+                  <span className="block whitespace-nowrap">{slide.eyebrowLine1}</span>
+                  <span className="block whitespace-nowrap">{slide.eyebrowLine2}</span>
+                </p>
 
-              <div className="relative inline-block mt-2 pr-32 sm:pr-40">
-                <h1 className="font-editorial text-[50px] sm:text-6xl font-normal text-[#141416] leading-[0.96] tracking-[-0.02em]">
-                  <span className="block">{slide.headlineLine1}</span>
-                  <span className="block">{slide.headlineLine2}</span>
-                  <span className="block">{slide.headlineLine3}</span>
-                </h1>
+                {/* Large Editorial Serif Headline + Handwritten Pink Script Overlay */}
+                <div className="relative mt-[0.5vw]">
+                  <h1 className="font-editorial text-[clamp(17px,4.5vw,42px)] font-normal text-[#141416] leading-[0.96] tracking-[-0.02em]">
+                    <span className="block whitespace-nowrap">{slide.headlineLine1}</span>
+                    <span className="block whitespace-nowrap">{slide.headlineLine2}</span>
+                    <span className="block whitespace-nowrap">{slide.headlineLine3}</span>
+                  </h1>
 
-                {slide.useReferenceScriptAsset && !scriptImgError ? (
-                  <img
-                    src={getAssetUrl('assets/aistudio/script_beautiful.png')}
-                    alt={slide.scriptWord}
-                    referrerPolicy="no-referrer"
-                    onError={() => setScriptImgError(true)}
-                    className="absolute right-0 top-[24%] w-36 sm:w-44 h-auto object-contain pointer-events-none"
-                  />
-                ) : (
-                  <span className="font-script text-[#f83a6b] text-5xl sm:text-6xl leading-none absolute right-2 top-[32%] -rotate-[14deg] pointer-events-none">
-                    {slide.scriptWord}
-                  </span>
-                )}
-              </div>
+                  {/* Handwritten Pink Script */}
+                  {slide.useReferenceScriptAsset && !scriptImgError ? (
+                    <div className="pointer-events-none select-none">
+                      <span className="sr-only">{slide.scriptWord}</span>
+                      <img
+                        src={getAssetUrl('assets/aistudio/script_beautiful.png')}
+                        alt=""
+                        aria-hidden="true"
+                        referrerPolicy="no-referrer"
+                        onError={() => setScriptImgError(true)}
+                        className="absolute left-[44%] top-[24%] w-[48%] max-w-[90px] sm:max-w-[130px] md:max-w-[160px] h-auto object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <span className="font-script text-[#f83a6b] text-[clamp(18px,4.8vw,46px)] leading-none absolute left-[45%] top-[28%] -rotate-[14deg] whitespace-nowrap pointer-events-none select-none drop-shadow-xs">
+                      {slide.scriptWord}
+                    </span>
+                  )}
+                </div>
 
-              <p className="mt-4 font-ui text-[13.5px] sm:text-[15px] text-[#262423] leading-[1.58] max-w-sm">
-                {slide.description.map((line, i) => (
-                  <span key={i} className="block">
-                    {line}
+                {/* Description */}
+                <p className="mt-[0.6vw] sm:mt-[1vw] font-ui text-[clamp(7.5px,1.6vw,12.5px)] font-normal text-[#262423] leading-[1.4] tracking-[0.005em] line-clamp-2 max-w-[280px]">
+                  {slide.description.join(' ')}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Right-Side Text Pillars (Tablet md screens) */}
+          <div className="hidden md:flex absolute left-[92.5%] top-[22%] z-20 pointer-events-auto">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`mobile-pillars-${slide.id}`}
+                initial={{ opacity: 0, x: 4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -4 }}
+                transition={{ duration: 0.25 }}
+                className="flex flex-col"
+              >
+                {slide.pillars.map((word) => (
+                  <span
+                    key={`mob-pillar-${word}`}
+                    className="font-ui text-[7px] font-semibold uppercase tracking-[0.2em] text-[#1e1e22] leading-[1.9] whitespace-nowrap"
+                  >
+                    {word}
                   </span>
                 ))}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+                <span aria-hidden="true" className="mt-1 w-4 h-[1px] bg-[#2e7d32] block" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-          {/* 2. Central Kashmiri Model Visual + Floating Rounded Carousel Pill at Bottom (Screens 1 & 3) */}
-          <div className="relative mt-4 -mx-5 sm:mx-0 flex flex-col items-center">
-            <motion.img
-              key={`mobile-model-${currentSlide}`}
-              src={getAssetUrl('assets/aistudio/model_mobile.png')}
-              alt="Joyful fashion model in colourful embroidered Kashmiri outfit"
-              referrerPolicy="no-referrer"
-              initial={{ opacity: 0.9, scale: 0.985 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35 }}
-              style={{ filter: canvasFilterStyle }}
-              className="w-full max-w-lg h-auto object-contain"
-            />
-
-            {/* Floating Rounded Pill Carousel Controls (Matches Mobile Reference Screens 1 & 3) */}
-            <div
-              aria-label="Mobile Hero Carousel Controls"
-              className="relative z-20 -mt-14 mb-4 bg-[#fcf9f5]/95 backdrop-blur-xs rounded-full px-3 py-2 shadow-[0_8px_28px_rgba(24,24,27,0.12)] border border-white/90 inline-flex items-center gap-3.5"
-            >
-              <button
-                type="button"
-                onClick={handlePrev}
-                aria-label="Previous slide"
-                className="w-9 h-9 rounded-full border border-[#1e1e22] text-[#1e1e22] hover:bg-[#1e1e22] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4 stroke-[1.75]" />
-              </button>
-
-              <div role="tablist" className="flex items-center gap-1">
-                {HERO_SLIDES.map((s, idx) => {
-                  const isActive = idx === currentSlide;
-                  return (
-                    <button
-                      key={s.numberLabel}
-                      type="button"
-                      role="tab"
-                      aria-selected={isActive}
-                      onClick={() => handleSelectSlide(idx)}
-                      className={`relative px-2.5 pb-1 pt-0.5 font-ui text-xs tracking-wider tabular-nums cursor-pointer ${
-                        isActive
-                          ? 'font-bold text-[#17171a]'
-                          : 'font-semibold text-[#b8b2ac]'
-                      }`}
-                    >
-                      {s.numberLabel}
-                      {isActive && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute left-2 right-2 bottom-0 h-[2px] bg-[#f83a6b] rounded-full"
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                aria-label="Next slide"
-                className="w-9 h-9 rounded-full border border-[#1e1e22] text-[#1e1e22] hover:bg-[#1e1e22] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <ArrowRight className="w-4 h-4 stroke-[1.75]" />
-              </button>
+          {/* Bottom-Left: Three overlapping circular thumbnails + CURATED WITH LOVE (tablet & larger mobile) */}
+          <div className="hidden sm:flex absolute left-[4.8%] bottom-[5%] z-20 items-center gap-[1vw] pointer-events-auto">
+            <div className="flex items-center -space-x-[0.6vw]">
+              {[
+                getAssetUrl('assets/aistudio/avatar_1.png'),
+                getAssetUrl('assets/aistudio/avatar_2.png'),
+                getAssetUrl('assets/aistudio/avatar_3.png'),
+              ].map((src, idx) => (
+                <button
+                  key={`mob-thumb-${src}`}
+                  type="button"
+                  onClick={() => handleSelectSlide(idx)}
+                  aria-label={`Preview Kashmiri Look 0${idx + 1}`}
+                  className={`relative w-[clamp(22px,3vw,38px)] h-[clamp(22px,3vw,38px)] rounded-full overflow-hidden border-[1.5px] border-white shadow-xs transition-transform duration-200 hover:scale-105 hover:z-10 cursor-pointer ${
+                    currentSlide === idx ? 'ring-1.5 ring-[#f83a6b]/50' : ''
+                  }`}
+                >
+                  <img
+                    src={src}
+                    alt={`Thumbnail ${idx + 1}`}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
             </div>
+            <div className="font-ui text-[clamp(6.5px,1vw,8.5px)] font-semibold uppercase tracking-[0.2em] text-[#222020] leading-tight">
+              <span className="block whitespace-nowrap">{slide.curatedLine1}</span>
+              <span className="block whitespace-nowrap">{slide.curatedLine2}</span>
+            </div>
+          </div>
+
+          {/* Bottom-Right: Hero Carousel Controls (Prev arrow, 01 02 03 indicators, Next arrow) */}
+          <div
+            aria-label="Hero Carousel Controls"
+            className="absolute right-[2.8%] bottom-[5%] z-20 flex items-center gap-[0.8vw] pointer-events-auto"
+          >
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous slide"
+              className="w-[clamp(22px,3vw,34px)] h-[clamp(22px,3vw,34px)] rounded-full border border-[#1e1e22]/80 bg-white/70 backdrop-blur-xs text-[#1e1e22] hover:bg-[#1e1e22] hover:text-white active:scale-95 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+            >
+              <ArrowLeft className="w-[42%] h-[42%] stroke-[2]" />
+            </button>
+
+            <div
+              role="tablist"
+              aria-label="Hero Slides"
+              className="relative flex items-center"
+            >
+              {HERO_SLIDES.map((s, idx) => {
+                const isActive = idx === currentSlide;
+                return (
+                  <button
+                    key={`mob-ind-${s.numberLabel}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`Slide ${s.numberLabel}`}
+                    onClick={() => handleSelectSlide(idx)}
+                    className={`relative px-[0.5vw] sm:px-[0.6vw] pb-[0.3vw] pt-[0.15vw] font-ui text-[clamp(8.5px,1.4vw,11.5px)] tracking-[0.06em] tabular-nums transition-colors cursor-pointer ${
+                      isActive
+                        ? 'font-bold text-[#17171a]'
+                        : 'font-semibold text-[#8a847e] hover:text-[#17171a]'
+                    }`}
+                  >
+                    {s.numberLabel}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute left-0 right-0 bottom-0 h-[1.5px] sm:h-[2px] transition-colors ${
+                        isActive ? 'bg-[#f83a6b]' : 'bg-[#ebe5de]'
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next slide"
+              className="w-[clamp(22px,3vw,34px)] h-[clamp(22px,3vw,34px)] rounded-full border border-[#1e1e22]/80 bg-white/70 backdrop-blur-xs text-[#1e1e22] hover:bg-[#1e1e22] hover:text-white active:scale-95 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+            >
+              <ArrowRight className="w-[42%] h-[42%] stroke-[2]" />
+            </button>
           </div>
         </div>
       </div>

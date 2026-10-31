@@ -18,8 +18,27 @@
     font-family: var(--font-sans-ui);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
+}
+
+/* Subtle custom scrollbar for sticky filter panel */
+.custom-filter-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #dfd5cb transparent;
+}
+.custom-filter-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-filter-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-filter-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2d7cc;
+  border-radius: 9999px;
+}
+.custom-filter-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cfbeaf;
 }
 
 .font-editorial {

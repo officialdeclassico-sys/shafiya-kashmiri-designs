@@ -85,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <span aria-hidden="true">·</span>
           <a
             href="#custom-designs"
-            onClick={(e) => handleLinkClick(e, 'Contact', 'contact-enquiry')}
+            onClick={(e) => handleLinkClick(e, 'Custom Designs', 'contact-enquiry')}
             className="hover:text-[#f83a6b] transition-colors"
           >
             Custom Designs
@@ -97,6 +97,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             className="hover:text-[#f83a6b] transition-colors"
           >
             Our Story
+          </a>
+          <span aria-hidden="true">·</span>
+          <a
+            href="#contact"
+            onClick={(e) => handleLinkClick(e, 'Contact', 'contact')}
+            className="hover:text-[#f83a6b] transition-colors"
+          >
+            Contact Us
           </a>
         </div>
       </div>

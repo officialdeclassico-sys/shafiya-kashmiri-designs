@@ -355,18 +355,13 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     aria-expanded={collectionsOpen}
                     aria-haspopup="true"
-                    className={`group relative py-2 inline-flex items-center gap-1.5 text-[14px] xl:text-[15px] font-medium tracking-[-0.01em] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    className={`group relative py-2 inline-flex items-center text-[14px] xl:text-[15px] font-medium tracking-[-0.01em] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                       isActive
                         ? 'text-[#141416] font-semibold'
                         : 'text-[#262528] hover:text-[#f83a6b]'
                     }`}
                   >
                     <span>{item.label}</span>
-                    <ChevronDown
-                      className={`w-3.5 h-3.5 stroke-[2.2] transition-transform duration-200 ${
-                        collectionsOpen ? 'rotate-180 text-[#f83a6b]' : ''
-                      }`}
-                    />
                     {isActive && (
                       <span className="absolute left-0 right-0 -bottom-0.5 h-[2px] bg-[#f83a6b] rounded-full" />
                     )}
