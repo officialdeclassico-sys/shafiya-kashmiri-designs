@@ -1,5 +1,6 @@
 import React from 'react';
 import { COLLECTION_CATEGORIES, CollectionCategory } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
 import { NavItemKey } from './Header';
 
 interface OurCollectionsSectionProps {
@@ -45,14 +46,14 @@ export const OurCollectionsSection: React.FC<OurCollectionsSectionProps> = ({
     >
       {/* Left & Right Decorative Pink Floral Line-Art Illustrations from Reference */}
       <img
-        src="/assets/aistudio/collections_flower_left.png"
+        src={getAssetUrl('assets/aistudio/collections_flower_left.png')}
         alt=""
         aria-hidden="true"
         referrerPolicy="no-referrer"
         className="hidden sm:block absolute top-0 left-0 w-36 md:w-44 lg:w-52 xl:w-60 h-auto object-contain pointer-events-none select-none"
       />
       <img
-        src="/assets/aistudio/collections_flower_right.png"
+        src={getAssetUrl('assets/aistudio/collections_flower_right.png')}
         alt=""
         aria-hidden="true"
         referrerPolicy="no-referrer"
@@ -124,7 +125,7 @@ export const OurCollectionsSection: React.FC<OurCollectionsSectionProps> = ({
                 {/* Top Fashion Photograph with subtle hover zoom */}
                 <div className="relative w-full aspect-[232/174] overflow-hidden bg-[#f4ede6]">
                   <img
-                    src={category.image}
+                    src={getAssetUrl(category.image)}
                     alt={`${category.title} — Shafiya Kashmiri Designs`}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"

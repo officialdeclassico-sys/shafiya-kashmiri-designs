@@ -3,6 +3,7 @@ import { Sparkles, Feather, Compass, ArrowRight } from 'lucide-react';
 import { Header, NavItemKey } from './Header';
 import { Footer } from './Footer';
 import { BagItem } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
 
 interface OurStoryPageProps {
   onOpenSignIn: () => void;
@@ -48,7 +49,7 @@ const EMBROIDERY_TRADITIONS = [
     eyebrow: 'CHAIN-STITCH FLORAL RELIEF',
     description:
       'Worked with a fine hooked needle known as the aari, artisans create vibrant, dimensional blooms of rose pink, turquoise, and saffron yellow across soft Pashmina and silk bases.',
-    image: '/assets/aistudio/contact_embroidery_tall.png',
+    image: getAssetUrl('assets/aistudio/contact_embroidery_tall.png'),
     bgColor: '#fdd0d3',
   },
   {
@@ -56,7 +57,7 @@ const EMBROIDERY_TRADITIONS = [
     eyebrow: 'SATIN-STITCH HEIRLOOM MOTIFS',
     description:
       'Delicate, reversible needlepoint inspired by Kashmir’s Chinar foliage and almond blossoms — so finely executed that the motif flows seamlessly across the drape.',
-    image: '/assets/aistudio/cat_1_shawls.png',
+    image: getAssetUrl('assets/aistudio/cat_1_shawls.png'),
     bgColor: '#c0f2e9',
   },
   {
@@ -64,7 +65,7 @@ const EMBROIDERY_TRADITIONS = [
     eyebrow: 'HERITAGE REIMAGINED',
     description:
       'Traditional pherans, fluid stoles, and tailored suits balanced with modern proportions and pastel palettes for effortless everyday and festive elegance.',
-    image: '/assets/aistudio/cat_4_stoles.png',
+    image: getAssetUrl('assets/aistudio/cat_4_stoles.png'),
     bgColor: '#fef1b9',
   },
 ];
@@ -113,7 +114,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
 
         {/* Far-Left Decorative Botanical Line-Art Flowers */}
         <img
-          src="/assets/aistudio/contact_hero_left_flowers.png"
+          src={getAssetUrl('assets/aistudio/contact_hero_left_flowers.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
@@ -208,9 +209,9 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
               <div className="mt-7 flex items-center gap-4">
                 <div className="flex items-center -space-x-2.5">
                   {[
-                    '/assets/aistudio/avatar_1.png',
-                    '/assets/aistudio/avatar_2.png',
-                    '/assets/aistudio/avatar_3.png',
+                    getAssetUrl('assets/aistudio/avatar_1.png'),
+                    getAssetUrl('assets/aistudio/avatar_2.png'),
+                    getAssetUrl('assets/aistudio/avatar_3.png'),
                   ].map((src, idx) => (
                     <img
                       key={src}
@@ -246,7 +247,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
                 {/* Main Editorial Panorama: Kashmiri Fashion Model in Embroidered Attire + Dal Lake Houseboats + Snow-Capped Mountains + Pastel Brush Strokes + Handwritten Script */}
                 <div className="relative w-full rounded-[28px] lg:rounded-[34px] overflow-hidden">
                   <img
-                    src="/assets/aistudio/contact_hero_visual.png"
+                    src={getAssetUrl('assets/aistudio/contact_hero_visual.png')}
                     alt="Kashmiri fashion model wearing richly embroidered floral attire with scenic Dal Lake houseboats and snow-capped Himalayan mountains"
                     referrerPolicy="no-referrer"
                     className="w-full h-auto object-cover select-none"
@@ -256,7 +257,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
                 {/* Overlapping Bottom-Left Editorial Craft Card: Hand-Knotted Floral Aari Detail */}
                 <div className="hidden sm:flex items-center gap-3.5 absolute -bottom-5 left-3 xl:left-6 z-20 rounded-2xl bg-[#fcf9f5]/95 backdrop-blur-xs border-2 border-white p-2.5 pr-5 shadow-[0_12px_32px_rgba(24,24,27,0.12)]">
                   <img
-                    src="/assets/aistudio/contact_embroidery_tall.png"
+                    src={getAssetUrl('assets/aistudio/contact_embroidery_tall.png')}
                     alt="Macro detail of hand-knotted Kashmiri floral Aari embroidery"
                     referrerPolicy="no-referrer"
                     className="w-14 h-16 xl:w-16 xl:h-20 rounded-xl object-cover shrink-0"
@@ -277,7 +278,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
                 {/* Overlapping Top-Left Editorial Silhouette Card: Contemporary Kashmiri Pheran */}
                 <div className="hidden xl:flex items-center gap-3 absolute -top-3 left-4 z-20 rounded-2xl bg-[#fcf9f5]/95 backdrop-blur-xs border-2 border-white p-2 pr-4 shadow-[0_10px_28px_rgba(24,24,27,0.1)]">
                   <img
-                    src="/assets/aistudio/cat_3_pherans.png"
+                    src={getAssetUrl('assets/aistudio/cat_3_pherans.png')}
                     alt="Contemporary Kashmiri embroidered pheran silhouette"
                     referrerPolicy="no-referrer"
                     className="w-12 h-12 rounded-xl object-cover shrink-0"
@@ -308,7 +309,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
       >
         {/* Decorative Right-Edge Floral Line Illustration */}
         <img
-          src="/assets/aistudio/collections_flower_right.png"
+          src={getAssetUrl('assets/aistudio/collections_flower_right.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
@@ -336,7 +337,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
               {/* Primary Embroidery Close-up Card */}
               <div className="col-span-7 rounded-[28px] overflow-hidden shadow-lg border-4 border-white bg-[#fcf8f3]">
                 <img
-                  src="/assets/aistudio/collage_embroidery.png"
+                  src={getAssetUrl('assets/aistudio/collage_embroidery.png')}
                   alt="Intricate Kashmiri floral Aari and Sozni hand embroidery"
                   referrerPolicy="no-referrer"
                   className="w-full h-[340px] sm:h-[440px] xl:h-[480px] object-cover"
@@ -355,7 +356,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
               <div className="col-span-5 space-y-4 sm:space-y-5">
                 <div className="rounded-[26px] overflow-hidden shadow-md border-4 border-white bg-[#fcf8f3]">
                   <img
-                    src="/assets/aistudio/collage_kashmir.png"
+                    src={getAssetUrl('assets/aistudio/collage_kashmir.png')}
                     alt="Dal Lake houseboats and snow-capped Zabarwan mountains in Kashmir"
                     referrerPolicy="no-referrer"
                     className="w-full h-52 sm:h-64 xl:h-72 object-cover"
@@ -473,7 +474,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
         className="relative w-full py-14 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-[3.5%] xl:px-[4%] bg-[#fcfaf6] border-t border-[#f0e6dc] overflow-hidden"
       >
         <img
-          src="/assets/aistudio/collections_flower_left.png"
+          src={getAssetUrl('assets/aistudio/collections_flower_left.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
@@ -510,7 +511,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
             >
               <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#f4ede6]">
                 <img
-                  src={item.image}
+                  src={getAssetUrl(item.image)}
                   alt={item.title}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-center"
@@ -583,7 +584,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             <div className="rounded-[24px] overflow-hidden bg-[#dcd0f5] shadow-sm flex flex-col">
               <img
-                src="/assets/aistudio/cat_2_suits.png"
+                src={getAssetUrl('assets/aistudio/cat_2_suits.png')}
                 alt="Handcrafted Kashmiri Suits"
                 referrerPolicy="no-referrer"
                 className="w-full aspect-[4/3] object-cover"
@@ -600,7 +601,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
 
             <div className="rounded-[24px] overflow-hidden bg-[#c0f2e9] shadow-sm flex flex-col">
               <img
-                src="/assets/aistudio/cat_3_pherans.png"
+                src={getAssetUrl('assets/aistudio/cat_3_pherans.png')}
                 alt="Handcrafted Kashmiri Pherans"
                 referrerPolicy="no-referrer"
                 className="w-full aspect-[4/3] object-cover"
@@ -617,7 +618,7 @@ export const OurStoryPage: React.FC<OurStoryPageProps> = ({
 
             <div className="rounded-[24px] overflow-hidden bg-[#bfeaf5] shadow-sm flex flex-col">
               <img
-                src="/assets/aistudio/cat_6_custom.png"
+                src={getAssetUrl('assets/aistudio/cat_6_custom.png')}
                 alt="Bespoke Kashmiri Custom Designs"
                 referrerPolicy="no-referrer"
                 className="w-full aspect-[4/3] object-cover"

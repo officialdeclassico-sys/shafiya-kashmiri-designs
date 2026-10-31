@@ -23,6 +23,7 @@ import {
   ALL_SIZES,
   ALL_CATALOG_CATEGORIES,
 } from '../data/productsData';
+import { getAssetUrl } from '../utils/assetPath';
 
 interface ProductListingPageProps {
   embeddedInHomepage?: boolean;
@@ -389,7 +390,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             {/* Desktop Full-Width Category Banner */}
             <div className="hidden md:block relative w-full aspect-[922/154] min-h-[180px] max-h-[310px] overflow-hidden bg-[#fdf8f3]">
               <img
-                src="/assets/aistudio/plp_hero_clean_banner.png"
+                src={getAssetUrl('assets/aistudio/plp_hero_clean_banner.png')}
                 alt="Kurtas, Ethnic Sets — Kashmiri model and Dal Lake landscape"
                 referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
@@ -424,7 +425,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             {/* Mobile Category Hero Banner matching Screen 1 */}
             <div className="md:hidden relative w-full min-h-[118px] bg-[#fdf8f3] overflow-hidden flex items-center">
               <img
-                src="/assets/aistudio/plp_hero_clean_banner.png"
+                src={getAssetUrl('assets/aistudio/plp_hero_clean_banner.png')}
                 alt="Kurtas, Ethnic Sets — Shafiya Kashmiri Designs"
                 referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none"
@@ -1009,7 +1010,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
                         }`}
                       >
                         <img
-                          src={activeVariant.image}
+                          src={getAssetUrl(activeVariant.image)}
                           alt={`${product.name} — ${activeVariant.name}`}
                           referrerPolicy="no-referrer"
                           style={{
@@ -1216,7 +1217,7 @@ export const ProductListingPage: React.FC<ProductListingPageProps> = ({
             {/* Popup Header with Decorative Pink Floral Artwork matching Screen 2 */}
             <div className="relative px-5 py-3.5 bg-white border-b border-[#efe6dd] flex items-center justify-between shrink-0 overflow-hidden">
               <img
-                src="/assets/aistudio/collections_flower_right.png"
+                src={getAssetUrl('assets/aistudio/collections_flower_right.png')}
                 alt=""
                 aria-hidden="true"
                 referrerPolicy="no-referrer"

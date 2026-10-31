@@ -40,6 +40,7 @@ import {
   SAMPLE_SIZE_GUIDE_CHART,
   ProductReviewItem,
 } from '../data/productsData';
+import { getAssetUrl } from '../utils/assetPath';
 
 interface ProductDetailsPageProps {
   productSlug: string;
@@ -399,7 +400,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
     const createdReview: ProductReviewItem = {
       id: `user-rev-${Date.now()}`,
       author: newReviewAuthor.trim(),
-      avatar: '/assets/aistudio/plp_card_2_pink.png',
+      avatar: getAssetUrl('assets/aistudio/plp_card_2_pink.png'),
       rating: newReviewRating,
       date: 'Just now',
       variantLabel: `Colour: ${activeColour.name} · Size: ${selectedSize ?? product.defaultSize}`,
@@ -455,7 +456,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
       <div className="relative w-full flex-1">
         {/* Decorative Right Pink Floral Line Art (Desktop) */}
         <img
-          src="/assets/aistudio/collections_flower_right.png"
+          src={getAssetUrl('assets/aistudio/collections_flower_right.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
@@ -464,7 +465,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
 
         {/* Decorative Bottom-Left Pink Floral Line Art (Desktop) */}
         <img
-          src="/assets/aistudio/collections_flower_left.png"
+          src={getAssetUrl('assets/aistudio/collections_flower_left.png')}
           alt=""
           aria-hidden="true"
           referrerPolicy="no-referrer"
@@ -537,7 +538,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                       }`}
                     >
                       <img
-                        src={item.thumbUrl ?? item.url}
+                        src={getAssetUrl(item.thumbUrl ?? item.url)}
                         alt={item.label}
                         referrerPolicy="no-referrer"
                         style={{
@@ -592,12 +593,12 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                 className="relative flex-1 w-full aspect-[345/405] sm:aspect-[386/447] max-h-[650px] rounded-[22px] sm:rounded-[24px] overflow-hidden bg-[#efe7dd] border border-[#eae0d5] shadow-[0_6px_28px_rgba(24,24,27,0.06)] cursor-zoom-in group select-none"
               >
                 <img
-                  src={
+                  src={getAssetUrl(
                     activeGalleryIdx === 0 &&
                     product.id !== 'women-cotton-silk-kurta-salwar-dupatta-set'
                       ? activeColour.image
                       : currentGalleryItem.url
-                  }
+                  )}
                   alt={`${product.name} — ${currentGalleryItem.label}`}
                   referrerPolicy="no-referrer"
                   style={{
@@ -1299,7 +1300,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                       {/* Image + Top-Right Wishlist Button */}
                       <div className="relative w-full aspect-[108/138] sm:aspect-[163/189] overflow-hidden bg-[#f4ede6]">
                         <img
-                          src={rel.colours[0].image}
+                          src={getAssetUrl(rel.colours[0].image)}
                           alt={rel.name}
                           referrerPolicy="no-referrer"
                           onClick={() => {
@@ -1521,10 +1522,10 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-center gap-2.5">
                             <img
-                              src={
+                              src={getAssetUrl(
                                 currentSingleReview.avatar ??
-                                '/assets/aistudio/plp_card_1_black.png'
-                              }
+                                'assets/aistudio/plp_card_1_black.png'
+                              )}
                               alt={currentSingleReview.author}
                               referrerPolicy="no-referrer"
                               className="w-9 h-9 rounded-full object-cover object-top border border-[#e5ddd4] shrink-0"
@@ -1614,7 +1615,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-[#e5ddd4] bg-[#f4ede6] shrink-0 cursor-pointer"
                                   >
                                     <img
-                                      src={photoUrl}
+                                      src={getAssetUrl(photoUrl)}
                                       alt={`Customer review photo ${pIdx + 1}`}
                                       referrerPolicy="no-referrer"
                                       className="w-full h-full object-cover object-top hover:scale-105 transition-transform"
@@ -2282,10 +2283,10 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-center gap-2.5">
                               <img
-                                src={
+                                src={getAssetUrl(
                                   rev.avatar ??
-                                  '/assets/aistudio/plp_card_1_black.png'
-                                }
+                                  'assets/aistudio/plp_card_1_black.png'
+                                )}
                                 alt={rev.author}
                                 referrerPolicy="no-referrer"
                                 className="w-9 h-9 rounded-full object-cover object-top border border-[#e5ddd4] shrink-0"
@@ -2343,7 +2344,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
                                   className="w-16 h-16 rounded-xl overflow-hidden border border-[#e5ddd4] bg-[#f4ede6] shrink-0 cursor-pointer"
                                 >
                                   <img
-                                    src={photoUrl}
+                                    src={getAssetUrl(photoUrl)}
                                     alt={`Customer review photo ${pIdx + 1}`}
                                     referrerPolicy="no-referrer"
                                     className="w-full h-full object-cover object-top"
@@ -2439,7 +2440,7 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
               <X className="w-5 h-5" />
             </button>
             <img
-              src={lightboxImageUrl ?? currentGalleryItem.url}
+              src={getAssetUrl(lightboxImageUrl ?? currentGalleryItem.url)}
               alt={product.name}
               referrerPolicy="no-referrer"
               style={{ filter: activeColour.imageFilter ?? 'none' }}

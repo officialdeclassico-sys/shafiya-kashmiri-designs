@@ -27,6 +27,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Header, NavItemKey } from './Header';
 import { Footer } from './Footer';
 import { BagItem } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
 
 interface ContactPageProps {
   onOpenSignIn: () => void;
@@ -119,6 +120,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   bagItems,
   onAddSampleBagItem,
   onRemoveBagItem,
+  onOpenBagPage,
   wishlistIds,
   wishlistActive,
   onToggleHeaderWishlist,
@@ -250,7 +252,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         <div className="hidden lg:block relative w-full aspect-[1312/472] bg-[#fcfbf9] overflow-hidden">
           {/* Full-Viewport Background Canvas: Left Botanical Flowers + Right Kashmir Dal Lake, Mountains, Model, Brush Strokes & Handwritten Script */}
           <img
-            src="/assets/aistudio/contact_hero_clean_canvas.png"
+            src={getAssetUrl('assets/aistudio/contact_hero_clean_canvas.png')}
             alt="Kashmir Dal Lake houseboats and snow-capped mountains alongside a fashion model wearing a colourful floral embroidered Kashmiri shawl"
             referrerPolicy="no-referrer"
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
@@ -297,7 +299,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     Let&apos;s Create Something Beautiful
                   </span>
                   <img
-                    src="/assets/aistudio/contact_script_lets_create.png"
+                    src={getAssetUrl('assets/aistudio/contact_script_lets_create.png')}
                     alt=""
                     aria-hidden="true"
                     referrerPolicy="no-referrer"
@@ -391,7 +393,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             <div className="mt-1 mb-3">
               {!scriptImgError ? (
                 <img
-                  src="/assets/aistudio/contact_script_lets_create.png"
+                  src={getAssetUrl('assets/aistudio/contact_script_lets_create.png')}
                   alt="Let's Create Something Beautiful"
                   referrerPolicy="no-referrer"
                   onError={() => setScriptImgError(true)}
@@ -449,7 +451,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
             <div className="mt-6 -mx-5 sm:mx-0">
               <img
-                src="/assets/aistudio/contact_hero_visual.png"
+                src={getAssetUrl('assets/aistudio/contact_hero_visual.png')}
                 alt="Kashmir Dal Lake and fashion model in colourful embroidered Kashmiri shawl"
                 referrerPolicy="no-referrer"
                 className="w-full h-auto object-cover sm:rounded-3xl"
@@ -474,7 +476,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             <div className="lg:col-span-4 h-auto self-start relative rounded-[24px] bg-[#fdecef] border border-[#fadadd] p-6 sm:p-7 overflow-hidden shadow-[0_6px_24px_rgba(24,24,27,0.03)]">
               {/* Decorative Pink Floral Corner Illustration in Bottom-Right */}
               <img
-                src="/assets/aistudio/contact_reach_flower.png"
+                src={getAssetUrl('assets/aistudio/contact_reach_flower.png')}
                 alt=""
                 aria-hidden="true"
                 referrerPolicy="no-referrer"
@@ -561,7 +563,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             {/* SECTION C — EMBROIDERY IMAGE (Natural, balanced aspect ratio, no forced height stretching) */}
             <div className="lg:col-span-3 h-auto self-start rounded-[24px] overflow-hidden shadow-[0_6px_24px_rgba(24,24,27,0.05)] bg-[#f5ece2]">
               <img
-                src="/assets/aistudio/contact_embroidery_tall.png"
+                src={getAssetUrl('assets/aistudio/contact_embroidery_tall.png')}
                 alt="Handcrafted Kashmiri floral embroidered fabric"
                 referrerPolicy="no-referrer"
                 className="w-full h-auto max-h-[380px] sm:max-h-[410px] object-cover object-center block"
@@ -572,7 +574,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             <div className="lg:col-span-5 h-auto self-start relative rounded-[24px] bg-[#fffdfb] border border-[#f2e8df] p-6 sm:p-7 shadow-[0_6px_24px_rgba(24,24,27,0.03)] overflow-hidden">
               {/* Top-Right Decorative Pink Floral Illustration */}
               <img
-                src="/assets/aistudio/contact_form_flower.png"
+                src={getAssetUrl('assets/aistudio/contact_form_flower.png')}
                 alt=""
                 aria-hidden="true"
                 referrerPolicy="no-referrer"
@@ -854,7 +856,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   className="w-full h-full transition-transform duration-150 ease-out relative"
                 >
                   <img
-                    src="/assets/aistudio/contact_map_canvas.png"
+                    src={getAssetUrl('assets/aistudio/contact_map_canvas.png')}
                     alt="Interactive Map showing Shafiya Kashmiri Designs operating from India"
                     referrerPolicy="no-referrer"
                     draggable={false}
@@ -940,7 +942,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             >
               {/* Top-Right Decorative Botanical Leaf Line Art matching Reference */}
               <img
-                src="/assets/aistudio/contact_faq_leaf.png"
+                src={getAssetUrl('assets/aistudio/contact_faq_leaf.png')}
                 alt=""
                 aria-hidden="true"
                 referrerPolicy="no-referrer"

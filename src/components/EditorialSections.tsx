@@ -5,6 +5,7 @@ import {
   FeaturedPiece,
   COLLECTION_CATEGORIES,
 } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
 import { Footer } from './Footer';
 import { NavItemKey } from './Header';
 
@@ -156,7 +157,7 @@ export const EditorialSections: React.FC<EditorialSectionsProps> = ({
                 {/* Product Photography */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#f6efe8]">
                   <img
-                    src={piece.image}
+                    src={getAssetUrl(piece.image)}
                     alt={piece.name}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"

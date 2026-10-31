@@ -13,6 +13,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { getAssetUrl } from '../utils/assetPath';
 import { BrandLogo } from './BrandLogo';
 import {
   COLLECTION_CATEGORIES,
@@ -258,7 +259,7 @@ export const Header: React.FC<HeaderProps> = ({
           variant: 'Pure Pashmina · Hand-Knotted Floral Aari',
           price: '₹24,500',
           quantity: 1,
-          image: '/assets/aistudio/cat_1_shawls.png',
+          image: getAssetUrl('assets/aistudio/cat_1_shawls.png'),
         },
       ];
     });
@@ -299,7 +300,7 @@ export const Header: React.FC<HeaderProps> = ({
       name: p.name,
       craftNote: `${p.brand} · ${p.fabric}`,
       price: `₹${p.price.toLocaleString('en-IN')}`,
-      image: p.colours[0]?.image ?? '/assets/aistudio/plp_prod_1.png',
+      image: p.colours[0]?.image ? getAssetUrl(p.colours[0].image) : getAssetUrl('assets/aistudio/plp_prod_1.png'),
     })),
     ...FEATURED_PIECES.filter(
       (p) =>
@@ -617,7 +618,7 @@ export const Header: React.FC<HeaderProps> = ({
                           className="flex items-center justify-between gap-2.5"
                         >
                           <img
-                            src={item.image}
+                            src={getAssetUrl(item.image)}
                             alt={item.name}
                             referrerPolicy="no-referrer"
                             className="w-11 h-11 rounded-xl object-cover object-top border border-[#e6dcd2] shrink-0"
@@ -1113,7 +1114,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Decorative Brand Artwork below Sign In (Pink Brush Strokes, Kashmiri Floral Line Illustration, "Threads of a Brighter Tomorrow") */}
               <div className="px-4 pt-2 pb-1 flex justify-center">
                 <img
-                  src="/assets/aistudio/drawer_decorative_art.png"
+                  src={getAssetUrl('assets/aistudio/drawer_decorative_art.png')}
                   alt="Threads of a Brighter Tomorrow — Kashmiri floral line illustration"
                   referrerPolicy="no-referrer"
                   className="w-full max-w-[260px] h-auto object-contain select-none pointer-events-none"
@@ -1309,7 +1310,7 @@ export const Header: React.FC<HeaderProps> = ({
                     className="flex items-center justify-between gap-3"
                   >
                     <img
-                      src={piece.image}
+                      src={getAssetUrl(piece.image)}
                       alt={piece.name}
                       referrerPolicy="no-referrer"
                       className="w-12 h-12 rounded-full object-cover border border-[#e6dcd2] shrink-0"
@@ -1393,7 +1394,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="flex items-center justify-between gap-3"
                     >
                       <img
-                        src={item.image}
+                        src={getAssetUrl(item.image)}
                         alt={item.name}
                         referrerPolicy="no-referrer"
                         className="w-12 h-12 rounded-xl object-cover object-top border border-[#e6dcd2] shrink-0"

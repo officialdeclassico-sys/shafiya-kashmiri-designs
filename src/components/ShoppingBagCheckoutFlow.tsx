@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   Trash2,
@@ -17,6 +17,8 @@ import {
   X,
 } from 'lucide-react';
 import { BagItem } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
+import { NavItemKey } from './Header';
 
 export interface ShippingAddress {
   fullName: string;
@@ -44,16 +46,26 @@ export interface PlacedOrderRecord {
 }
 
 interface ShoppingBagCheckoutFlowProps {
-  mode: 'bag' | 'checkout' | 'confirmation';
-  onChangeMode: (mode: 'bag' | 'checkout' | 'confirmation') => void;
-  onCloseOrContinueShopping: () => void;
+  mode?: 'bag' | 'checkout' | 'confirmation';
+  initialStage?: 'bag' | 'checkout' | 'confirmation';
+  onChangeMode?: (mode: 'bag' | 'checkout' | 'confirmation') => void;
+  onCloseOrContinueShopping?: () => void;
+  onContinueShopping?: () => void;
   bagItems: BagItem[];
   onUpdateBagQuantity: (id: string, delta: number) => void;
   onRemoveBagItem: (id: string) => void;
-  onClearBag: () => void;
-  onOrderPlaced: (order: PlacedOrderRecord) => void;
-  lastPlacedOrder: PlacedOrderRecord | null;
+  onClearBag?: () => void;
+  onClearAllBag?: () => void;
+  onAddSampleBagItem?: () => void;
+  onOrderPlaced?: (order: PlacedOrderRecord) => void;
+  lastPlacedOrder?: PlacedOrderRecord | null;
   onOpenProduct?: (slug: string) => void;
+  onNavigate?: (page: NavItemKey) => void;
+  onOpenSignIn?: () => void;
+  wishlistIds?: string[];
+  wishlistActive?: boolean;
+  onToggleHeaderWishlist?: () => void;
+  onToggleWishlistItem?: (id: string) => void;
 }
 
 const DEFAULT_SAVED_ADDRESSES: ShippingAddress[] = [
@@ -83,16 +95,54 @@ export const ShoppingBagCheckoutFlow: React.FC<
   ShoppingBagCheckoutFlowProps
 > = ({
   mode,
+  initialStage,
   onChangeMode,
   onCloseOrContinueShopping,
+  onContinueShopping,
   bagItems,
   onUpdateBagQuantity,
   onRemoveBagItem,
   onClearBag,
+  onClearAllBag,
+  onAddSampleBagItem: _onAddSampleBagItem,
   onOrderPlaced,
   lastPlacedOrder,
   onOpenProduct,
+  onNavigate: _onNavigate,
+  onOpenSignIn: _onOpenSignIn,
+  wishlistIds: _wishlistIds,
+  wishlistActive: _wishlistActive,
+  onToggleHeaderWishlist: _onToggleHeaderWishlist,
+  onToggleWishlistItem: _onToggleWishlistItem,
 }) => {
+  const [internalMode, setInternalMode] = useState<'bag' | 'checkout' | 'confirmation'>(
+    mode ?? initialStage ?? 'bag'
+  );
+
+  useEffect(() => {
+    if (mode) {
+      setInternalMode(mode);
+    } else if (initialStage) {
+      setInternalMode(initialStage);
+    }
+  }, [mode, initialStage]);
+
+  const activeMode = mode ?? internalMode;
+
+  const handleModeChange = (nextMode: 'bag' | 'checkout' | 'confirmation') => {
+    setInternalMode(nextMode);
+    onChangeMode?.(nextMode);
+  };
+
+  const handleContinueShopping = () => {
+    if (onContinueShopping) onContinueShopping();
+    else if (onCloseOrContinueShopping) onCloseOrContinueShopping();
+  };
+
+  const handleClearBag = () => {
+    if (onClearBag) onClearBag();
+    if (onClearAllBag) onClearAllBag();
+  };
   const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3>(1);
   const [savedAddresses, setSavedAddresses] = useState<ShippingAddress[]>(
     DEFAULT_SAVED_ADDRESSES
@@ -196,8 +246,8 @@ export const ShoppingBagCheckoutFlow: React.FC<
       address: activeAddress,
     };
 
-    onOrderPlaced(orderRecord);
-    onChangeMode('confirmation');
+    onOrderPlaced?.(orderRecord);
+    handleModeChange('confirmation');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -210,7 +260,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
   // ===========================================================================
   // SCREEN 8 — SHOPPING BAG ("My Bag")
   // ===========================================================================
-  if (mode === 'bag') {
+  if (activeMode === 'bag') {
     return (
       <div className="min-h-screen w-full bg-[#fcf9f5] flex flex-col justify-between">
         <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pt-5 pb-32 flex-1">
@@ -219,7 +269,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
             <div className="flex items-center gap-2.5">
               <button
                 type="button"
-                onClick={onCloseOrContinueShopping}
+                onClick={handleContinueShopping}
                 aria-label="Back to shopping"
                 className="w-9 h-9 rounded-full bg-white border border-[#e6ddd3] flex items-center justify-center text-[#141824] hover:text-[#f81d5c] transition-colors cursor-pointer"
               >
@@ -236,7 +286,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
             {bagItems.length > 0 && (
               <button
                 type="button"
-                onClick={onClearBag}
+                onClick={handleClearBag}
                 className="font-ui text-xs sm:text-sm font-semibold text-[#f81d5c] hover:underline cursor-pointer"
               >
                 Clear All
@@ -258,7 +308,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
               </p>
               <button
                 type="button"
-                onClick={onCloseOrContinueShopping}
+                onClick={handleContinueShopping}
                 className="mt-2 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#f81d5c] hover:bg-[#e0144f] text-white font-ui text-xs sm:text-sm font-semibold shadow-sm transition-colors cursor-pointer"
               >
                 <span>Explore Collections</span>
@@ -296,7 +346,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
                         className="w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-[#f4ede6] shrink-0 border border-[#ebe2d8] cursor-pointer"
                       >
                         <img
-                          src={item.image}
+                          src={getAssetUrl(item.image)}
                           alt={item.name}
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover object-top"
@@ -429,7 +479,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
                 type="button"
                 onClick={() => {
                   setCheckoutStep(1);
-                  onChangeMode('checkout');
+                  handleModeChange('checkout');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="w-full h-12 rounded-full bg-gradient-to-r from-[#f81d5c] to-[#ff2e6c] hover:from-[#e0144f] hover:to-[#eb1e5c] text-white font-ui text-sm font-semibold flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(248,29,92,0.3)] transition-all cursor-pointer"
@@ -447,7 +497,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
   // ===========================================================================
   // SCREEN 9 — STEP-BASED CHECKOUT (1 Address -> 2 Payment -> 3 Review)
   // ===========================================================================
-  if (mode === 'checkout') {
+  if (activeMode === 'checkout') {
     return (
       <div className="min-h-screen w-full bg-[#fcf9f5] flex flex-col justify-between">
         <div className="w-full max-w-2xl mx-auto px-4 sm:px-6 pt-5 pb-32 flex-1">
@@ -459,7 +509,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
                 if (checkoutStep > 1) {
                   setCheckoutStep((prev) => (prev - 1) as 1 | 2 | 3);
                 } else {
-                  onChangeMode('bag');
+                  handleModeChange('bag');
                 }
               }}
               aria-label="Back"
@@ -931,7 +981,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
                     className="flex items-center justify-between gap-3 pt-2 border-t border-[#f3ece4] first:border-t-0 first:pt-0"
                   >
                     <img
-                      src={item.image}
+                      src={getAssetUrl(item.image)}
                       alt={item.name}
                       referrerPolicy="no-referrer"
                       className="w-12 h-14 rounded-lg object-cover object-top shrink-0"
@@ -1049,7 +1099,33 @@ export const ShoppingBagCheckoutFlow: React.FC<
   // ===========================================================================
   // SCREEN 10 — ORDER CONFIRMATION ("Order Placed Successfully!")
   // ===========================================================================
-  const order = lastPlacedOrder;
+  const order: PlacedOrderRecord = lastPlacedOrder ?? {
+    orderNumber: 'SHF-20251030-0014',
+    orderDate: 'October 30, 2025',
+    estimatedDelivery: '5-7 Business Days',
+    items:
+      bagItems.length > 0
+        ? bagItems
+        : [
+            {
+              id: 'sample-order-item',
+              name: 'Women Cotton Silk Kurta Salwar Dupatta Set',
+              variant: 'Black / M',
+              price: '₹808',
+              image: getAssetUrl('assets/aistudio/plp_card_1_black.png'),
+              quantity: 1,
+              colour: 'Black',
+              size: 'M',
+            },
+          ],
+    subtotal: subtotal || 808,
+    discountTotal: discountTotal || 0,
+    shippingCharge: 0,
+    finalTotal: finalTotal || 808,
+    deliveryMethod: 'standard',
+    paymentMethod: 'Cash / Pay on Delivery (Verified Dispatch)',
+    address: activeAddress,
+  };
 
   return (
     <div className="min-h-screen w-full bg-[#fcf9f5] flex items-center justify-center p-4 sm:p-6">
@@ -1144,7 +1220,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
 
           <button
             type="button"
-            onClick={onCloseOrContinueShopping}
+            onClick={handleContinueShopping}
             className="w-full h-11 rounded-full bg-gradient-to-r from-[#f81d5c] to-[#ff2e6c] hover:from-[#e0144f] hover:to-[#eb1e5c] text-white font-ui text-xs sm:text-sm font-semibold shadow-[0_6px_18px_rgba(248,29,92,0.28)] transition-all cursor-pointer"
           >
             Continue Shopping
@@ -1207,7 +1283,7 @@ export const ShoppingBagCheckoutFlow: React.FC<
                     className="flex items-center justify-between gap-2.5 pt-2 border-t border-[#f3ece4] first:border-t-0 first:pt-0"
                   >
                     <img
-                      src={item.image}
+                      src={getAssetUrl(item.image)}
                       alt={item.name}
                       referrerPolicy="no-referrer"
                       className="w-10 h-12 rounded-lg object-cover object-top shrink-0"

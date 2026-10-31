@@ -1,3 +1,5 @@
+import { getAssetUrl } from '../utils/assetPath';
+
 export type SizeOption = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
 
 export const ALL_SIZES: SizeOption[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -217,7 +219,7 @@ function createDemoReviews(
     {
       id: `${productId}-rev-1`,
       author: 'Priya S.',
-      avatar: '/assets/aistudio/pdp_thumb_3.png',
+      avatar: getAssetUrl('assets/aistudio/pdp_thumb_3.png'),
       verifiedPurchase: true,
       rating: 5,
       date: '5 days ago',
@@ -225,16 +227,16 @@ function createDemoReviews(
       comment:
         'Beautiful fabric and amazing quality. The Kashmiri embroidery is really elegant and finely finished. Fits perfectly!',
       photos: [
-        primaryPhoto,
-        '/assets/aistudio/pdp_thumb_3.png',
-        '/assets/aistudio/pdp_thumb_4.png',
+        getAssetUrl(primaryPhoto),
+        getAssetUrl('assets/aistudio/pdp_thumb_3.png'),
+        getAssetUrl('assets/aistudio/pdp_thumb_4.png'),
       ],
       helpfulCount: 12,
     },
     {
       id: `${productId}-rev-2`,
       author: 'Ananya K.',
-      avatar: '/assets/aistudio/cat_1_shawls.png',
+      avatar: getAssetUrl('assets/aistudio/cat_1_shawls.png'),
       verifiedPurchase: true,
       rating: 5,
       date: '2 weeks ago',
@@ -246,20 +248,20 @@ function createDemoReviews(
     {
       id: `${productId}-rev-3`,
       author: 'Meera R.',
-      avatar: '/assets/aistudio/cat_2_suits.png',
+      avatar: getAssetUrl('assets/aistudio/cat_2_suits.png'),
       verifiedPurchase: true,
       rating: 4,
       date: '3 weeks ago',
       variantLabel: `Colour: ${colourName} · Size: L`,
       comment:
         'The drape and border detailing are very graceful. True to the Shafiya size guide measurements.',
-      photos: ['/assets/aistudio/pdp_thumb_4.png'],
+      photos: [getAssetUrl('assets/aistudio/pdp_thumb_4.png')],
       helpfulCount: 5,
     },
     {
       id: `${productId}-rev-4`,
       author: 'Zoya H.',
-      avatar: '/assets/aistudio/cat_3_pherans.png',
+      avatar: getAssetUrl('assets/aistudio/cat_3_pherans.png'),
       verifiedPurchase: true,
       rating: 5,
       date: '1 month ago',
@@ -278,48 +280,52 @@ function buildFourGalleryImages(
   detailImg: string,
   mainFilter?: string
 ): ProductGalleryItem[] {
+  const resolvedMain = getAssetUrl(mainImg);
+  const resolvedSecondary = getAssetUrl(secondaryImg);
+  const resolvedDetail = getAssetUrl(detailImg);
+
   return [
     {
       id: `${prefix}-g1`,
-      url: mainImg,
-      thumbUrl: mainImg,
+      url: resolvedMain,
+      thumbUrl: resolvedMain,
       label: 'Full-Length Front View',
       imageFilter: mainFilter,
     },
     {
       id: `${prefix}-g2`,
-      url: mainImg,
-      thumbUrl: mainImg,
+      url: resolvedMain,
+      thumbUrl: resolvedMain,
       label: 'Neckline & Yoke Close-Up',
       cropClass: 'scale-135 object-top',
       imageFilter: mainFilter,
     },
     {
       id: `${prefix}-g3`,
-      url: mainImg,
-      thumbUrl: mainImg,
+      url: resolvedMain,
+      thumbUrl: resolvedMain,
       label: 'Border & Hemline Craft Detail',
       cropClass: 'scale-135 object-bottom',
       imageFilter: mainFilter,
     },
     {
       id: `${prefix}-g4`,
-      url: detailImg,
-      thumbUrl: detailImg,
+      url: resolvedDetail,
+      thumbUrl: resolvedDetail,
       label: 'Kashmiri Needlework Close-Up',
     },
     {
       id: `${prefix}-g5`,
-      url: secondaryImg,
-      thumbUrl: secondaryImg,
+      url: resolvedSecondary,
+      thumbUrl: resolvedSecondary,
       label: '360° Fabric Drape & Motion Preview',
       isVideoPreview: true,
       cropClass: 'scale-115 object-center',
     },
     {
       id: `${prefix}-g6`,
-      url: mainImg,
-      thumbUrl: mainImg,
+      url: resolvedMain,
+      thumbUrl: resolvedMain,
       label: 'Back & Silhouette Fall View',
       cropClass: 'scale-110 object-center',
       imageFilter: mainFilter,
@@ -330,7 +336,7 @@ function buildFourGalleryImages(
 // ============================================================================
 // DEMONSTRATION PRODUCT CATALOGUE (24 DISTINCT PRODUCTS ACROSS 10 CATEGORIES)
 // ============================================================================
-export const CATALOG_PRODUCTS: CatalogProduct[] = [
+const RAW_CATALOG_PRODUCTS: CatalogProduct[] = [
   // -------------------------------------------------------------------------
   // 1. KURTAS — Women Cotton Silk Kurta Salwar Dupatta Set (Reference Card 1)
   // -------------------------------------------------------------------------
@@ -2543,3 +2549,24 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     ),
   },
 ];
+
+export const CATALOG_PRODUCTS: CatalogProduct[] = RAW_CATALOG_PRODUCTS.map(
+  (prod) => ({
+    ...prod,
+    colours: prod.colours.map((col) => ({
+      ...col,
+      image: getAssetUrl(col.image),
+    })),
+    gallery: prod.gallery.map((g) => ({
+      ...g,
+      url: getAssetUrl(g.url),
+      thumbUrl: g.thumbUrl ? getAssetUrl(g.thumbUrl) : getAssetUrl(g.url),
+    })),
+    reviews: prod.reviews.map((rev) => ({
+      ...rev,
+      avatar: rev.avatar ? getAssetUrl(rev.avatar) : undefined,
+      photos: rev.photos ? rev.photos.map((p) => getAssetUrl(p)) : undefined,
+    })),
+  })
+);
+

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HERO_SLIDES, BagItem } from '../data/heroSlides';
+import { getAssetUrl } from '../utils/assetPath';
 import { Header, NavItemKey } from './Header';
 
 interface HeroBannerProps {
@@ -99,7 +100,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
         {/* Reference Visual Canvas Layer (Central Model, Pink Circle, Floral Line Art, Brush Strokes & Right Collage) */}
         <motion.img
           key={`canvas-${currentSlide}`}
-          src="/assets/aistudio/hero_clean_canvas.png"
+          src={getAssetUrl('assets/aistudio/hero_clean_canvas.png')}
           alt="Joyful woman wearing handcrafted floral embroidered Kashmiri ensemble beside Kashmir embroidery and Dal Lake collage"
           referrerPolicy="no-referrer"
           initial={{ opacity: 0.92, scale: 1.008 }}
@@ -185,7 +186,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   <div className="pointer-events-none select-none">
                     <span className="sr-only">{slide.scriptWord}</span>
                     <img
-                      src="/assets/aistudio/script_beautiful.png"
+                      src={getAssetUrl('assets/aistudio/script_beautiful.png')}
                       alt=""
                       aria-hidden="true"
                       referrerPolicy="no-referrer"
@@ -245,9 +246,9 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
         <div className="absolute left-[5.05%] bottom-[6.2%] z-20 flex items-center gap-[1.15vw] pointer-events-auto">
           <div className="flex items-center -space-x-[0.75vw]">
             {[
-              '/assets/aistudio/avatar_1.png',
-              '/assets/aistudio/avatar_2.png',
-              '/assets/aistudio/avatar_3.png',
+              getAssetUrl('assets/aistudio/avatar_1.png'),
+              getAssetUrl('assets/aistudio/avatar_2.png'),
+              getAssetUrl('assets/aistudio/avatar_3.png'),
             ].map((src, idx) => (
               <button
                 key={src}
@@ -399,7 +400,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
                 {slide.useReferenceScriptAsset && !scriptImgError ? (
                   <img
-                    src="/assets/aistudio/script_beautiful.png"
+                    src={getAssetUrl('assets/aistudio/script_beautiful.png')}
                     alt={slide.scriptWord}
                     referrerPolicy="no-referrer"
                     onError={() => setScriptImgError(true)}
@@ -426,7 +427,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
           <div className="relative mt-4 -mx-5 sm:mx-0 flex flex-col items-center">
             <motion.img
               key={`mobile-model-${currentSlide}`}
-              src="/assets/aistudio/model_mobile.png"
+              src={getAssetUrl('assets/aistudio/model_mobile.png')}
               alt="Joyful fashion model in colourful embroidered Kashmiri outfit"
               referrerPolicy="no-referrer"
               initial={{ opacity: 0.9, scale: 0.985 }}

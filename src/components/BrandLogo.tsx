@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getAssetUrl } from '../utils/assetPath';
 
 interface BrandLogoProps {
   onClick?: () => void;
@@ -22,7 +23,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ onClick, compact = false }
       <div className={compact ? 'h-5 flex items-center justify-center -mb-1' : 'h-[26px] flex items-center justify-center -mb-1.5'}>
         {!imgError ? (
           <img
-            src="/assets/aistudio/logo_flower.png"
+            src={getAssetUrl('assets/aistudio/logo_flower.png')}
             alt=""
             aria-hidden="true"
             referrerPolicy="no-referrer"
